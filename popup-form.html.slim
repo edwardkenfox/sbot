@@ -1,0 +1,280 @@
+| <!doctype html
+/!
+  | | This page is shown when the extension button is clicked, because the
+  | | "browser_action" field in manifest.json contains the "default_popup" key with
+  | | value "popup.html".
+html
+  head
+    meta charset="UTF-8" /
+    title Getting Started Extension's Popup
+    /!
+      | | \- JavaScript and HTML must be in separate files: see our Content Security
+      | | \- Policy documentation[1] for details and explanation.
+      | | \-
+      | | \- [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+    /! Custom font
+    link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" /
+    /! Latest compiled and minified CSS
+    link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" /
+    /! Optional theme
+    link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet" /
+    /! Font Awesome
+    link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" /
+    /! jQuery
+    script src="javascripts/jquery.min.js"
+    /! Latest compiled and minified JavaScript
+    script src="javascripts/bootstrap.min.js"
+    /! Custom css
+    link href="style.css" rel="stylesheet" /
+    css:
+      | | input {
+          | | width: 100%;
+      | | }
+  body
+    a href="popup-main.html"
+      i.fa.fa-chevron-circle-left
+      | Back
+    .title Your checkout address
+    div role="tabpanel"
+      /! Nav tabs
+      ul.nav.nav-tabs role="tablist"
+        li.active role="presentation"
+          a aria-controls="tyo" data-toggle="tab" href="#tyo" role="tab"  TYO
+        li role="presentation"
+          a aria-controls="nyc" data-toggle="tab" href="#nyc" role="tab"  NYC
+      /! Tab panes
+      .tab-content
+        #tyo.tab-pane.fade.in.active role="tabpanel"
+          form
+            .form-group style="border:none;"
+              input#credit_card_last_name.name name="credit_card[last_name]" placeholder=("First Name") size="30" type="text" /
+            .form-group
+              input#credit_card_first_name.name name="credit_card[first_name]" placeholder=("Last Name") size="30" type="text" /
+            .form-group
+              input#order_email.string.email.required name="order[email]" placeholder=("Email Address") size="50" type="email" /
+            .form-group
+              input#order_tel.string.required name="order[tel]" placeholder=("Telephone Number") size="50" tel="true" type="text" /
+            .form-group
+              label.string.required.control-label for="order_billing_state"  State
+              select#order_billing_state.select.required name="order[billing_state]"
+                option value=""
+                option value=(" 北海道")  北海道
+                option value=(" 青森県")  青森県
+                option value=(" 岩手県")  岩手県
+                option value=(" 宮城県")  宮城県
+                option value=(" 秋田県")  秋田県
+                option value=(" 山形県")  山形県
+                option value=(" 福島県")  福島県
+                option value=(" 茨城県")  茨城県
+                option value=(" 栃木県")  栃木県
+                option value=(" 群馬県")  群馬県
+                option value=(" 埼玉県")  埼玉県
+                option value=(" 千葉県")  千葉県
+                option selected="selected" value=(" 東京都")  東京都
+                option value=(" 神奈川県")  神奈川県
+                option value=(" 新潟県")  新潟県
+                option value=(" 富山県")  富山県
+                option value=(" 石川県")  石川県
+                option value=(" 福井県")  福井県
+                option value=(" 山梨県")  山梨県
+                option value=(" 長野県")  長野県
+                option value=(" 岐阜県")  岐阜県
+                option value=(" 静岡県")  静岡県
+                option value=(" 愛知県")  愛知県
+                option value=(" 三重県")  三重県
+                option value=(" 滋賀県")  滋賀県
+                option value=(" 京都府")  京都府
+                option value=(" 大阪府")  大阪府
+                option value=(" 兵庫県")  兵庫県
+                option value=(" 奈良県")  奈良県
+                option value=(" 和歌山県")  和歌山県
+                option value=(" 鳥取県")  鳥取県
+                option value=(" 島根県")  島根県
+                option value=(" 岡山県")  岡山県
+                option value=(" 広島県")  広島県
+                option value=(" 山口県")  山口県
+                option value=(" 徳島県")  徳島県
+                option value=(" 香川県")  香川県
+                option value=(" 愛媛県")  愛媛県
+                option value=(" 高知県")  高知県
+                option value=(" 福岡県")  福岡県
+                option value=(" 佐賀県")  佐賀県
+                option value=(" 長崎県")  長崎県
+                option value=(" 熊本県")  熊本県
+                option value=(" 大分県")  大分県
+                option value=(" 宮崎県")  宮崎県
+                option value=(" 鹿児島県")  鹿児島県
+                option value=(" 沖縄県")  沖縄県
+            .form-group
+              input#order_billing_city.string.required name="order[billing_city]" placeholder="City" size="50" type="text" /
+            .form-group
+              input#order_billing_address.string.required name="order[billing_address]" placeholder=("Last Address") size="50" type="text" /
+            .form-group
+              input#order_billing_zip.string.optional maxlength="8" name="order[billing_zip]" placeholder=("Postal Code") size="50" type="text" /
+            .form-group
+              label.string.required.control-label for="credit_card_type"  Payment Method
+              select#credit_card_type.select.required name="credit_card[type]"
+                option value="visa"  Visa
+                option value="american_express"  American Express
+                option value="master"  Mastercard
+                option value="cod"  Cash on Delivery
+            .form-group.hideme
+              input#cnb.string.required name="credit_card[cnb]" placeholder=("Credit Card Number") size="50" type="text" /
+            .form-group.hideme
+              label.string.required.control-label for="credit_card_type"  Expiry Date
+              select#credit_card_month name="credit_card[month]"
+                option value="01"  01
+                option value="02"  02
+                option selected="selected" value="03"  03
+                option value="04"  04
+                option value="05"  05
+                option value="06"  06
+                option value="07"  07
+                option value="08"  08
+                option value="09"  09
+                option value="10"  10
+                option value="11"  11
+                option value="12"  12
+              select#credit_card_year name="credit_card[year]"
+                option value="2015"  2015
+                option value="2016"  2016
+                option value="2017"  2017
+                option value="2018"  2018
+                option value="2019"  2019
+                option value="2020"  2020
+                option value="2021"  2021
+                option value="2022"  2022
+                option value="2023"  2023
+                option value="2024"  2024
+                option value="2025"  2025
+            .form-group.hideme
+              input#vval.string.required maxlength="4" name="credit_card[vval]" placeholder=("CVV Number") size="50" type="text" /
+            button#savetyoAdd type="submit"
+              i.fa.fa-save Save information
+            button#clearAdd type="reset"  Clear
+        #nyc.tab-pane role="tabpanel"
+          form
+            .form-group style="border:none;"
+              input#order_billing_name.string.required first_and_last="true" name="order[billing_name]" placeholder="Name" required="required" size="50" style=("cursor: auto;") type="text" /
+              /! <input class="name" id="credit_card_last_name" name="credit_card[last_name]" placeholder="First Name" size="30" type="text"
+            .form-group
+              input#order_email.string.email.required name="order[email]" placeholder=("Email Address") size="50" type="email" /
+            .form-group
+              input#order_tel.string.required name="order[tel]" placeholder=("Telephone Number") size="50" tel="true" type="text" /
+            .form-group
+              input#bo.string.required name="order[billing_address]" placeholder=("Address Line 1") required="required" size="50" type="text" /
+            .form-group
+              input#oba3.string.required name="order[billing_address]" placeholder=("Address Line 2") required="required" size="50" type="text" /
+            .form-group
+              input#order_billing_zip.string.required name="order[billing_zip]" placeholder="Zip" required="required" size="5" style="width:auto" type="text" zipcode="true" /
+            .form-group
+              input#order_billing_city.string.required name="order[billing_city]" placeholder="City" required="required" size="50" type="text" /
+            .form-group
+              label.string.required.control-label for="order_billing_state"  State
+              select#order_billing_state.select.optional name="order[billing_state]"
+                option value=""
+                option value="AL"  AL
+                option value="AK"  AK
+                option value="AS"  AS
+                option value="AZ"  AZ
+                option value="AR"  AR
+                option value="CA"  CA
+                option value="CO"  CO
+                option value="CT"  CT
+                option value="DE"  DE
+                option value="DC"  DC
+                option value="FM"  FM
+                option value="FL"  FL
+                option value="GA"  GA
+                option value="GU"  GU
+                option value="HI"  HI
+                option value="ID"  ID
+                option value="IL"  IL
+                option value="IN"  IN
+                option value="IA"  IA
+                option value="KS"  KS
+                option value="KY"  KY
+                option value="LA"  LA
+                option value="ME"  ME
+                option value="MH"  MH
+                option value="MD"  MD
+                option value="MA"  MA
+                option value="MI"  MI
+                option value="MN"  MN
+                option value="MS"  MS
+                option value="MO"  MO
+                option value="MT"  MT
+                option value="NE"  NE
+                option value="NV"  NV
+                option value="NH"  NH
+                option value="NJ"  NJ
+                option value="NM"  NM
+                option value="NY"  NY
+                option value="NC"  NC
+                option value="ND"  ND
+                option value="MP"  MP
+                option value="OH"  OH
+                option value="OK"  OK
+                option value="OR"  OR
+                option value="PW"  PW
+                option value="PA"  PA
+                option value="PR"  PR
+                option value="RI"  RI
+                option value="SC"  SC
+                option value="SD"  SD
+                option value="TN"  TN
+                option value="TX"  TX
+                option value="UT"  UT
+                option value="VT"  VT
+                option value="VI"  VI
+                option value="VA"  VA
+                option value="WA"  WA
+                option value="WV"  WV
+                option value="WI"  WI
+                option value="WY"  WY
+            .form-group
+              label.string.required.control-label for="order_billing_country"  Country
+              select#order_billing_country.select.optional name="order[billing_country]"
+                option value="USA"  USA
+                option value="CANADA"  CANADA
+            .form-group
+              label.string.required.control-label for="credit_card_type"  Payment Method
+              select#credit_card_type.select.required name="credit_card[type]"
+                option value="visa"  Visa
+                option value="american_express"  American Express
+                option value="master"  Mastercard
+            .form-group
+              input#cnb.string.required name="credit_card[cnb]" placeholder=("Credit Card Number") size="50" type="text" /
+            .form-group
+              label.string.required.control-label for="credit_card_type"  Expiry Date
+              select#credit_card_month name="credit_card[month]"
+                option value="01"  01
+                option value="02"  02
+                option selected="selected" value="03"  03
+                option value="04"  04
+                option value="05"  05
+                option value="06"  06
+                option value="07"  07
+                option value="08"  08
+                option value="09"  09
+                option value="10"  10
+                option value="11"  11
+                option value="12"  12
+              select#credit_card_year name="credit_card[year]"
+                option value="2015"  2015
+                option value="2016"  2016
+                option value="2017"  2017
+                option value="2018"  2018
+                option value="2019"  2019
+                option value="2020"  2020
+                option value="2021"  2021
+                option value="2022"  2022
+                option value="2023"  2023
+                option value="2024"  2024
+                option value="2025"  2025
+            .form-group
+              input#vval.string.required maxlength="4" name="credit_card[vval]" placeholder=("CVV Number") size="50" type="text" /
+            button#savenycAdd type="submit"
+              i.fa.fa-save Save information
+            button#clearAdd type="reset"  Clear
+    script src="javascripts/pref.js" type="text/javascript"
