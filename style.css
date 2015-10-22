@@ -1,0 +1,174 @@
+a:link, a:visited, a:active, a:hover {
+  box-shadow: none;
+  color: #424242;
+  outline: none;
+  text-decoration: none; }
+
+body {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  padding: 24px;
+  text-rendering: optimizeLegibility;
+  width: 400px; }
+
+form {
+  padding: 0;
+  width: 100%; }
+
+label {
+  margin-left: 10px; }
+
+#top1, #top2 {
+  width: 135px; }
+
+.form-group {
+  border-top: 1px solid #eee;
+  margin: 0; }
+
+input[type="text"], input[type="url"], input[type="email"] {
+  border: 0;
+  color: #424242;
+  font-size: 14px;
+  height: 48px;
+  margin-right: 5px;
+  outline: none;
+  padding: 10px;
+  width: 95%; }
+
+input:focus {
+  border-left: 5px solid #eee;
+  box-shadow: none; }
+
+select {
+  -moz-appearance: none;
+  /* Removes Default Firefox style*/
+  -webkit-appearance: none;
+  /*Removes default chrome and safari style*/
+  border: 1px solid #eee !important;
+  /*Removes border*/
+  /*My custom style for fonts*/
+  border-radius: 0;
+  box-shadow: none;
+  color: #424242;
+  margin: 10px;
+  padding: 10px;
+  text-indent: .01px;
+  /* Removes default arrow from firefox*/
+  text-overflow: "";
+  /*Removes default arrow from firefox*/
+  width: 100px;
+  /*Width of select dropdown to give space for arrow image*/ }
+
+#credit_card_type {
+  width: 204px; }
+
+button, button[type="submit"] {
+  background-color: #424242;
+  border: none;
+  color: #fff;
+  height: 48px;
+  width: 100%; }
+
+#add_field_button {
+  background-color: #bdbdbd; }
+
+#add_field_button:hover {
+  background-color: #424242; }
+
+#stopMe, #clearAdd {
+  background-color: #ed1c24;
+  display: inline-block;
+  margin: 0;
+  vertical-align: middle;
+  width: 20%; }
+
+#stopMe:hover {
+  background-color: #424242; }
+
+#clickMe, #savenycAdd, #savetyoAdd, #saveSize {
+  background-color: #424242;
+  display: inline-block;
+  margin: 0;
+  vertical-align: middle;
+  width: 78%; }
+
+#clickMe {
+  font-size: 24px; }
+
+#clickMe:hover {
+  background-color: #ed1c24; }
+
+::-webkit-input-placeholder {
+  color: #ccc;
+  font-weight: 100; }
+
+button[type="submit"]:disabled {
+  background-color: #dbdbdb !important; }
+
+.title {
+  font-size: 22px;
+  font-weight: 500;
+  padding: 18px;
+  text-align: center; }
+
+.goleft {
+  float: left; }
+
+.goright {
+  float: right; }
+
+/* Toggle switch styles */
+.paper-toggle {
+  clear: both;
+  margin: 20px 0; }
+
+.paper-toggle input:empty {
+  margin-left: -999px; }
+
+.paper-toggle input:empty ~ label {
+  cursor: pointer;
+  float: left;
+  line-height: 1.6em;
+  position: relative;
+  user-select: none;
+  width: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none; }
+
+.paper-toggle input:empty ~ label:before, .paper-toggle input:empty ~ label:after {
+  -webkit-transition: all 200ms ease-in;
+  content: " ";
+  display: block;
+  position: absolute;
+  transition: all 200ms ease-in; }
+
+.paper-toggle input:empty ~ label:before {
+  background-color: #424242;
+  height: 1px;
+  left: 135px;
+  top: 10px;
+  width: 30px; }
+
+input.switch:empty ~ label:after {
+  background-color: #fff;
+  border: solid 1px #424242 !important;
+  border-radius: 50%;
+  border-radius: 50%;
+  bottom: .1em;
+  height: 8px;
+  height: 12px;
+  left: 156px;
+  margin-left: .1em;
+  top: 4.5px;
+  width: 1.4em;
+  width: 12px; }
+
+.paper-toggle input:checked ~ label:before {
+  background-color: #0f9d58; }
+
+.paper-toggle input:checked ~ label:after {
+  background-color: #0f9d58;
+  border: solid 1px #0f9d58 !important;
+  left: 131px; }
+
+/*# sourceMappingURL=style.css.map */
