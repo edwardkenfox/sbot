@@ -29,8 +29,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 // Remove unavailable items from cart
 chrome.storage.local.get('statusStore', function(items) {
     var statusStore = items.statusStore;
-    if (statusStore.enableStatus == 1) return; // Check if enabled is on
-    // nostock();
+    if (statusStore.enableStatus != 1) { // Check if enabled is on
+        throw new FatalError("Something went badly wrong!");
+    }
     chrome.storage.local.get("allURL", function(items) { // Get all registered URLs
         var allURL = items.allURL;
         var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
@@ -162,6 +163,13 @@ chrome.storage.local.get('statusStore', function(items) {
 });
 
 fillforms();
+
+// Function to create an error
+function FatalError() {
+    Error.apply(this, arguments);
+    this.name = "FatalError";
+}
+FatalError.prototype = Object.create(Error.prototype);
 
 // Function to get size
 function getSize(itemSize) {
