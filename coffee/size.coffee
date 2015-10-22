@@ -1,6 +1,6 @@
 $ ->
   # Get size form fields from storage and populate fields
-  chrome.storage.sync.get 'sizePref', (items) ->
+  chrome.storage.local.get 'sizePref', (items) ->
     sizePref = items.sizePref
     for key of sizePref
       $('#' + key + ' select').val sizePref[key]
@@ -16,7 +16,7 @@ $ ->
       $('#shoes select').each (idx, element) ->
         sizePref.shoes = @value
         return
-      chrome.storage.sync.set sizePref: sizePref
+      chrome.storage.local.set sizePref: sizePref
       return
 
     saveAllSizes()
