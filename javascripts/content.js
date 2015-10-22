@@ -56,28 +56,7 @@ chrome.storage.local.get('statusStore', function(items) {
                             var checkCart = setInterval(function() {
                                 if (($("#size").val() === sizeVal) && ($("#cart-addf").length !== 0)) {
                                     console.log("The size is correctly selected.");
-                                    $.ajax({
-                                        url: $("#cart-addf").attr('action'),
-                                        type: 'POST',
-                                        data: "size=" + sizeVal,
-                                        success: function() {
-                                            if (posNow < totalPos) {
-                                                // Increase the URL position by 1
-                                                var nextPos = posNow + 1;
-                                                allURL.nowUrl = nextPos;
-                                                chrome.storage.local.set({
-                                                    allURL: allURL
-                                                }, function() {
-                                                    // Go to the next URL
-                                                    var nextObj = ("putURL" + nextPos).toString();
-                                                    var nextPage = allURL[nextObj];
-                                                    window.location.href = nextPage;
-                                                });
-                                            } else {
-                                                checkout(); // Check out if item as been added to cart
-                                            }
-                                        }
-                                    });
+                                    addSize();
                                     clearInterval(checkCart);
                                 }
                             }, 10);
@@ -86,8 +65,8 @@ chrome.storage.local.get('statusStore', function(items) {
                 } else if (statusStore == 1) {
                     clearInterval(checkSize);
                     console.log("Dropdown doesnt exist");
-                    onesize = $("#size").val();
-                    addSize();
+
+                    addOneSize();
                 }
             }, 10);
         } else if (gotoPage === undefined) { // If URL is not defined
@@ -133,7 +112,7 @@ chrome.storage.local.get('statusStore', function(items) {
                     //Browser has allowed it to be opened
                     win.focus();
                 } else {
-                    //Broswer has blocked it
+                    //Browser has blocked it
                     alert('Please allow popups for this site');
                 }
             }
@@ -144,8 +123,43 @@ chrome.storage.local.get('statusStore', function(items) {
 
 fillforms();
 
-// Function to add size to cart
 function addSize() {
+    getLink().then(function(allURL) { // Get all registered URLs
+        // var allURL = items.allURL;
+        var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
+        // Get current URL position
+        var posNow = allURL.nowUrl;
+        // Get the URL to snipe at this time
+        var dataObj = ("putURL" + posNow).toString();
+        var gotoPage = allURL[dataObj];
+        $.ajax({
+            url: $("#cart-addf").attr('action'),
+            type: 'POST',
+            data: "size=" + sizeVal,
+            success: function() {
+                if (posNow < totalPos) {
+                    // Increase the URL position by 1
+                    var nextPos = posNow + 1;
+                    allURL.nowUrl = nextPos;
+                    chrome.storage.local.set({
+                        allURL: allURL
+                    }, function() {
+                        // Go to the next URL
+                        var nextObj = ("putURL" + nextPos).toString();
+                        var nextPage = allURL[nextObj];
+                        window.location.href = nextPage;
+                    });
+                } else {
+                    checkout(); // Check out if item as been added to cart
+                }
+            }
+        });
+    });
+}
+
+// Function to add size to cart
+function addOneSize() {
+    onesize = $("#size").val();
     getLink().then(function(allURL) { // Get all registered URLs
         // var allURL = items.allURL;
         var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
