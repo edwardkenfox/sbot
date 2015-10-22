@@ -1,6 +1,6 @@
 (function() {
   $(function() {
-    chrome.storage.sync.get('sizePref', function(items) {
+    chrome.storage.local.get('sizePref', function(items) {
       var key, sizePref;
       sizePref = items.sizePref;
       for (key in sizePref) {
@@ -21,7 +21,7 @@
         $('#shoes select').each(function(idx, element) {
           sizePref.shoes = this.value;
         });
-        chrome.storage.sync.set({
+        chrome.storage.local.set({
           sizePref: sizePref
         });
       };
