@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 
         grunt.initConfig({
                 jshint: {
-                    files: ['Gruntfile.js', 'size.js'],
+                    files: ['Gruntfile.js', 'javascripts/size.js'],
                     options: {
                         globals: {
                             jQuery: true
@@ -12,8 +12,8 @@ module.exports = function(grunt) {
                 coffee: {
                     compile: {
                         files: {
-                            'size.js': 'coffee/size.coffee',
-                            'content.js': 'coffee/content.coffee'
+                            'javascripts/size.js': 'coffee/size.coffee',
+                            'javascripts/content.js': 'coffee/content.coffee'
                         }
                     }
                 },
