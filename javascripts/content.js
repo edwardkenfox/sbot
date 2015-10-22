@@ -26,16 +26,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   }
 });
 
-
-function getSize(itemSize) {
-  return new Promise(function(resolve) {
-    chrome.storage.local.get('sizePref', function(items) { // Get size preferences from storage
-      resolve(items.sizePref[itemSize]);
-    });
-  });
-};
-
-fillforms();
 // Remove unavailable items from cart
 chrome.storage.local.get('statusStore', function(items) {
   var statusStore = items.statusStore;
@@ -171,6 +161,17 @@ chrome.storage.local.get('statusStore', function(items) {
   }
 });
 
+fillforms();
+
+// Function to get size
+function getSize(itemSize) {
+  return new Promise(function(resolve) {
+    chrome.storage.local.get('sizePref', function(items) { // Get size preferences from storage
+      resolve(items.sizePref[itemSize]);
+    });
+  });
+};
+
 // Function to go to checkout page
 function checkout() {
   turnOff();
@@ -215,7 +216,7 @@ function nostock() {
     }
   }
 }
-fillforms();
+
 // Function to fill forms if on checkout page
 function fillforms() {
   if (window.location.href == checkoutLink) {
