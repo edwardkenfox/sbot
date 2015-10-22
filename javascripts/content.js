@@ -71,36 +71,12 @@ chrome.storage.local.get('statusStore', function(items) {
         } else if (gotoPage === undefined) { // If URL is not defined
             console.log("URL is undefined! Go to next.");
             // Check if there is a next URL to be sniped.
-            if (posNow < totalPos) {
-                // Increase the URL position by 1
-                var nextPos = posNow + 1;
-                allURL.nowUrl = nextPos;
-                chrome.storage.local.set({
-                    allURL: allURL
-                }, function() {
-                    // Go to the next URL
-                    var nextObj = ("putURL" + nextPos).toString();
-                    var nextPage = allURL[nextObj];
-                    window.location.href = nextPage;
-                });
-            }
+            goNext();
         } else {
             if (($('time b:contains("11:00am")').length > 0) && (window.location != gotoPage)) {
                 console.log("URL doesn't exist, so skip item.");
                 // Check if there is a next URL to be sniped.
-                if (posNow < totalPos) {
-                    // Increase the URL position by 1
-                    var nextPos = posNow + 1;
-                    allURL.nowUrl = nextPos;
-                    chrome.storage.local.set({
-                        allURL: allURL
-                    }, function() {
-                        // Go to the next URL
-                        var nextObj = ("putURL" + nextPos).toString();
-                        var nextPage = allURL[nextObj];
-                        window.location.href = nextPage;
-                    });
-                }
+                goNext();
             } else if (window.location.href != checkoutLink) {
                 window.location.href = gotoPage;
             } else {
@@ -122,6 +98,30 @@ chrome.storage.local.get('statusStore', function(items) {
 
 fillforms();
 
+
+function goNext() {
+    getLink().then(function(allURL) { // Get all registered URLs
+        // var allURL = items.allURL;
+        var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
+        // Get current URL position
+        var posNow = allURL.nowUrl;
+        // Get the URL to snipe at this time
+        if (posNow < totalPos) {
+            // Increase the URL position by 1
+            var nextPos = posNow + 1;
+            var nextObj = ("putURL" + nextPos).toString();
+            var nextPage = allURL[nextObj];
+            window.location.href = nextPage;
+            allURL.nowUrl = nextPos;
+            chrome.storage.local.set({
+                allURL: allURL
+            });
+        } else {
+            checkout(); // Check out if item as been added to cart
+        }
+    });
+}
+
 function addSize() {
     getLink().then(function(allURL) { // Get all registered URLs
         // var allURL = items.allURL;
@@ -136,21 +136,7 @@ function addSize() {
             type: 'POST',
             data: "size=" + sizeVal,
             success: function() {
-                if (posNow < totalPos) {
-                    // Increase the URL position by 1
-                    var nextPos = posNow + 1;
-                    allURL.nowUrl = nextPos;
-                    chrome.storage.local.set({
-                        allURL: allURL
-                    }, function() {
-                        // Go to the next URL
-                        var nextObj = ("putURL" + nextPos).toString();
-                        var nextPage = allURL[nextObj];
-                        window.location.href = nextPage;
-                    });
-                } else {
-                    checkout(); // Check out if item as been added to cart
-                }
+                goNext();
             }
         });
     });
@@ -172,21 +158,7 @@ function addOneSize() {
             type: 'POST',
             data: "size=" + onesize,
             success: function() {
-                if (posNow < totalPos) {
-                    // Increase the URL position by 1
-                    var nextPos = posNow + 1;
-                    allURL.nowUrl = nextPos;
-                    chrome.storage.local.set({
-                        allURL: allURL
-                    }, function() {
-                        // Go to the next URL
-                        var nextObj = ("putURL" + nextPos).toString();
-                        var nextPage = allURL[nextObj];
-                        window.location.href = nextPage;
-                    });
-                } else {
-                    checkout(); // Check out if item as been added to cart
-                }
+                goNext();
             }
         });
     });
