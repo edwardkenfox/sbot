@@ -28,12 +28,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 // Remove unavailable items from cart
 chrome.storage.local.get('statusStore', function(items) {
-    var statusStore = items.statusStore;
-    if (statusStore.enableStatus != 1) { // Check if enabled is on
+    var statusStore = items.statusStore.enableStatus;
+    if (statusStore != 1) { // Check if enabled is on
         throw new FatalError("Something went badly wrong!");
     }
-    chrome.storage.local.get("allURL", function(items) { // Get all registered URLs
-        var allURL = items.allURL;
+    getLink().then(function(allURL) { // Get all registered URLs
+        // var allURL = items.allURL;
         var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
         // Get current URL position
         var posNow = allURL.nowUrl;
@@ -44,7 +44,7 @@ chrome.storage.local.get('statusStore', function(items) {
         if (window.location == gotoPage) {
             // Add to cart function
             var checkSize = setInterval(function() {
-                if ($('#size option').length && statusStore.enableStatus == 1) { // If product isn't already in cart and size dropdown exists
+                if ($('#size option').length && statusStore == 1) { // If product isn't already in cart and size dropdown exists
                     console.log("Dropdown exist");
                     clearInterval(checkSize);
                     getSize("tops").then(function(result) {
@@ -83,7 +83,7 @@ chrome.storage.local.get('statusStore', function(items) {
                             }, 10);
                         }
                     });
-                } else if (statusStore.enableStatus == 1) {
+                } else if (statusStore == 1) {
                     console.log("Dropdown doesnt exist");
                     onesize = $("#size").val();
                     $.ajax({
@@ -176,6 +176,14 @@ function getSize(itemSize) {
     return new Promise(function(resolve) {
         chrome.storage.local.get('sizePref', function(items) { // Get size preferences from storage
             resolve(items.sizePref[itemSize]);
+        });
+    });
+};
+
+function getLink() {
+    return new Promise(function(resolve) {
+        chrome.storage.local.get('allURL', function(items) { // Get size preferences from storage
+            resolve(items.allURL);
         });
     });
 };
