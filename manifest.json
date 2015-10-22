@@ -7,9 +7,9 @@
     // Recommended
     "description": "This bot adds items to your cart  and fills forms automatically.",
     "icons": {
-        "16": "icon16.png",
-        "48": "icon48.png",
-        "128": "icon128.png"
+        "16": "images/icon16.png",
+        "48": "images/icon48.png",
+        "128": "images/icon128.png"
     },
 
     "background": {
@@ -24,7 +24,7 @@
 
     "browser_action": {
         "default_title": "Click here!",
-        "default_icon": "icon48.png",
+        "default_icon": "images/icon48.png",
         "default_popup": "popup-main.html"
     },
 

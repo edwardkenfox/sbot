@@ -128,7 +128,7 @@ $(document).ready(function() {
         chrome.storage.sync.get('statusStore', function(items) {
             var statusStore = items.statusStore;
             if (statusStore.enableStatus == 1) {
-                $("#clickMe").html('<img src="three-dots.svg" style="display:inline-block;height:7px;width:auto;"> <div style="display:inline-block;font-size:16px;">Sniping...</div>');
+                $("#clickMe").html('<img src="images/three-dots.svg" style="display:inline-block;height:7px;width:auto;"> <div style="display:inline-block;font-size:16px;">Sniping...</div>');
                 $('#clickMe').prop('disabled', true);
                 $("#stopMe").prop('disabled', false);
             } else {
