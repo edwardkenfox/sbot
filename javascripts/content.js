@@ -84,6 +84,7 @@ chrome.storage.local.get('statusStore', function(items) {
                         }
                     });
                 } else if (statusStore == 1) {
+                    clearInterval(checkSize);
                     console.log("Dropdown doesnt exist");
                     onesize = $("#size").val();
                     addSize();
