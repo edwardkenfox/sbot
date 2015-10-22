@@ -7,7 +7,7 @@ $(document).ready(function() {
     var add_button = $("#add_field_button"); //Add button ID
     var x = "";
     // Initial text box count
-    chrome.storage.sync.get("allURL", function(items) { // Get all registered URLs
+    chrome.storage.local.get("allURL", function(items) { // Get all registered URLs
         var allURL = items.allURL;
         var totalPos = Object.keys(allURL).length - 1;
         if (totalPos) {
@@ -47,7 +47,7 @@ $(document).ready(function() {
             allURL[element.id] = this.value; // Set URL field id as Object name
         });
         allURL.nowUrl = 1; // Reset URL position
-        chrome.storage.sync.set({
+        chrome.storage.local.set({
             allURL: allURL
         });
     }
@@ -58,7 +58,7 @@ $(document).ready(function() {
         /// Change the enabled status to on
         var statusStore = {};
         statusStore.enableStatus = 1;
-        chrome.storage.sync.set({
+        chrome.storage.local.set({
             statusStore: statusStore
         });
 
@@ -84,7 +84,7 @@ $(document).ready(function() {
         // Change the enabled status to off
         var statusStore = {};
         statusStore.enableStatus = 0;
-        chrome.storage.sync.set({
+        chrome.storage.local.set({
             statusStore: statusStore
         });
 
@@ -92,7 +92,7 @@ $(document).ready(function() {
 
 
     // Get auto checkout status and set the checkbox
-    chrome.storage.sync.get('statusStore2', function(items) {
+    chrome.storage.local.get('statusStore2', function(items) {
         var statusStore2 = items.statusStore2;
         if (statusStore2.autoCheckout == 1) {
             $("#auto-checkout").prop('checked', true);
@@ -108,14 +108,14 @@ $(document).ready(function() {
             // Set auto-checkout status to on
             statusStore2 = {};
             statusStore2.autoCheckout = 1;
-            chrome.storage.sync.set({
+            chrome.storage.local.set({
                 statusStore2: statusStore2
             });
         } else {
             // Set auto-checkout status to off
             statusStore2 = {};
             statusStore2.autoCheckout = 0;
-            chrome.storage.sync.set({
+            chrome.storage.local.set({
                 statusStore2: statusStore2
             });
             console.log(statusStore2);
@@ -125,10 +125,10 @@ $(document).ready(function() {
 
     // Function to change enabled status and set button text
     function butText() {
-        chrome.storage.sync.get('statusStore', function(items) {
+        chrome.storage.local.get('statusStore', function(items) {
             var statusStore = items.statusStore;
             if (statusStore.enableStatus == 1) {
-                $("#clickMe").html('<img src="three-dots.svg" style="display:inline-block;height:7px;width:auto;"> <div style="display:inline-block;font-size:16px;">Sniping...</div>');
+                $("#clickMe").html('<img src="images/three-dots.svg" style="display:inline-block;height:7px;width:auto;"> <div style="display:inline-block;font-size:16px;">Sniping...</div>');
                 $('#clickMe').prop('disabled', true);
                 $("#stopMe").prop('disabled', false);
             } else {
@@ -147,7 +147,7 @@ $(document).ready(function() {
 
 
     // Fill input fields with saved URLs
-    chrome.storage.sync.get('allURL', function(items) {
+    chrome.storage.local.get('allURL', function(items) {
         var allURL = items.allURL;
         for (var key in allURL) {
             console.log('The retrieved key is "' + key + '" and the data is "' + allURL[key] + '"...');

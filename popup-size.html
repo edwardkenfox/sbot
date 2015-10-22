@@ -2,7 +2,7 @@
 <!--
 This page is shown when the extension button is clicked, because the
 "browser_action" field in manifest.json contains the "default_popup" key with
-value "popup.html".
+value "popup-main.html".
 -->
 <html>
 
@@ -24,9 +24,9 @@ value "popup.html".
     <!-- Font Awesome -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <!-- jQuery -->
-    <script src="jquery.min.js"></script>
+    <script src="javascripts/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript-->
-    <script src="bootstrap.min.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
     <!-- Custom css -->
     <link rel="stylesheet" href="style.css">
     <style type="text/css">
@@ -37,7 +37,7 @@ value "popup.html".
 </head>
 
 <body>
-    <div class="top-menu"> <a href="popup.html" class="goright">Back <i class="fa fa-chevron-circle-right"></i></a></div>
+    <div class="top-menu"> <a href="popup-main.html" class="goright">Back <i class="fa fa-chevron-circle-right"></i></a></div>
     <div class="title">Size Preferences</div>
     <form>
         <div class="form-group" id="tops">
@@ -62,7 +62,7 @@ value "popup.html".
         <button type="submit" id="saveSize"><i class="fa fa-save">Save information</i></button>
         <button type="reset" id="clearAdd">Clear</button>
     </form>
-    <script type="text/javascript" src="size.js"></script>
+    <script type="text/javascript" src="javascripts/size.js"></script>
 </body>
 
 </html>
