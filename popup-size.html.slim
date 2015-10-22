@@ -1,0 +1,58 @@
+| <!doctype html
+/!
+  | This page is shown when the extension button is clicked, because the
+  | "browser_action" field in manifest.json contains the "default_popup" key with
+  | value "popup-main.html".
+html
+  head
+    meta charset="UTF-8" /
+    title Getting Started Extension's Popup
+    /!
+      | \- JavaScript and HTML must be in separate files: see our Content Security
+      | \- Policy documentation[1] for details and explanation.
+      | \-
+      | \- [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+    /! Custom font
+    link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" /
+    /! Latest compiled and minified CSS
+    link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" /
+    /! Optional theme
+    link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet" /
+    /! Font Awesome
+    link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" /
+    /! jQuery
+    script src="javascripts/jquery.min.js"
+    /! Latest compiled and minified JavaScript
+    script src="javascripts/bootstrap.min.js"
+    /! Custom css
+    link href="style.css" rel="stylesheet" /
+    css:
+      | input {
+          | width: 100%;
+      | }
+  body
+    .top-menu
+      a.goright href="popup-main.html"
+        | Back
+        i.fa.fa-chevron-circle-right
+    .title Size Preferences
+    form
+      #tops.form-group
+        label.string.required.control-label for="top1"  Top
+        select#top1.select.required name="top1"
+          option value=""  First Choice
+          option value="Small"  Small
+          option value="Medium"  Medium
+          option value="Large"  Large
+          option value="XLarge"  XLarge
+      #shoes.form-group
+        label.string.required.control-label for="shoes"  Shoes
+        select#shoes.select.required name="shoes"
+          option value=""  Shoes
+          option value="10"  10
+          option value="10.5"  10.5
+          option value="11"  11
+      button#saveSize type="submit"
+        i.fa.fa-save Save information
+      button#clearAdd type="reset"  Clear
+    script src="javascripts/size.js" type="text/javascript"
