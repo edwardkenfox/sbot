@@ -8,8 +8,6 @@ chrome.runtime.onMessage.addListener(
                 farewell: "willcheck"
             });
             console.log("I got the check out message and will send back");
-
-
             chrome.tabs.query({}, function(tabs) {
                 var message = {
                     greeting: "clickcheck"
@@ -18,8 +16,5 @@ chrome.runtime.onMessage.addListener(
                     chrome.tabs.sendMessage(tabs[i].id, message);
                 }
             });
-
-
         }
-
     });
