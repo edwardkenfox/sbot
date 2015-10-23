@@ -18,11 +18,19 @@
           var sizePref;
           sizePref = void 0;
           sizePref = {
-            tops: 'Large',
-            shoes: '10.5'
+            tshirts: 'Large',
+            shoes: '10.5',
+            pants: 'Medium',
+            pantsalt: '32'
           };
-          $('#tops select').each(function(idx, element) {
-            sizePref.tops = this.value;
+          $('#tshirts select').each(function(idx, element) {
+            sizePref.tshirts = this.value;
+          });
+          $('#pants select').each(function(idx, element) {
+            sizePref.pants = this.value;
+          });
+          $('#pantsalt select').each(function(idx, element) {
+            sizePref.pantsalt = this.value;
           });
           $('#shoes select').each(function(idx, element) {
             sizePref.shoes = this.value;
