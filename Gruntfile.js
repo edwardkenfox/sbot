@@ -1,6 +1,11 @@
 module.exports = function(grunt) {
 
     grunt.initConfig({
+        clean: {
+            dist: [
+                'dist'
+            ]
+        },
         jshint: {
             files: ['Gruntfile.js', 'javascripts/size.js'],
             options: {
@@ -42,7 +47,7 @@ module.exports = function(grunt) {
             }
         }
     });
-
+    grunt.loadNpmTasks('grunt-contrib-clean'); // clean build folder
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-sass');
