@@ -73,29 +73,33 @@ chrome.storage.local.get('statusStore', function(items) {
             // Check if there is a next URL to be sniped.
             goNext();
         } else {
-            if (($('time b:contains("11:00am")').length > 0) && (window.location != gotoPage)) {
-                console.log("URL doesn't exist, so skip item.");
-                // Check if there is a next URL to be sniped.
-                goNext();
-            } else if (window.location.href != checkoutLink) {
-                window.location.href = gotoPage;
-            } else {
-                //open new tab and go to page
-                // chrome.tabs.create({ url: gotoPage });
-                var win = window.open(firstPage, '_blank');
-                if (win) {
-                    //Browser has allowed it to be opened
-                    win.focus();
-                } else {
-                    //Browser has blocked it
-                    alert('Please allow popups for this site');
-                }
-            }
+            failSafe();
         }
     });
 });
 
 fillforms();
+
+function failSafe() {
+    if (($('time b:contains("11:00am")').length > 0) && (window.location != gotoPage)) {
+        console.log("URL doesn't exist, so skip item.");
+        // Check if there is a next URL to be sniped.
+        goNext();
+    } else if (window.location.href != checkoutLink) {
+        window.location.href = gotoPage;
+    } else {
+        //open new tab and go to page
+        // chrome.tabs.create({ url: gotoPage });
+        var win = window.open(firstPage, '_blank');
+        if (win) {
+            //Browser has allowed it to be opened
+            win.focus();
+        } else {
+            //Browser has blocked it
+            alert('Please allow popups for this site');
+        }
+    }
+}
 
 function goNext() {
     getLink().then(function(allURL) { // Get all registered URLs
