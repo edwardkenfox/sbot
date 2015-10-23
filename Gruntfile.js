@@ -78,9 +78,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-coffee');
-    grunt.registerTask('default', ['jshint']);
-    grunt.registerTask('default', ['sass']);
-    grunt.registerTask('default', ['imagemin']);
-
+    grunt.registerTask('dist', ['clean', 'jshint', 'uglify', 'sass', 'slim', 'imagemin']);
 
 };
