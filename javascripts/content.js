@@ -93,11 +93,9 @@ chrome.storage.local.get('statusStore', function(items) {
             }
         }
     });
-
 });
 
 fillforms();
-
 
 function goNext() {
     getLink().then(function(allURL) { // Get all registered URLs
@@ -180,6 +178,7 @@ function getSize(itemSize) {
     });
 };
 
+// Fucntion to get link from storage
 function getLink() {
     return new Promise(function(resolve) {
         chrome.storage.local.get('allURL', function(items) { // Get size preferences from storage
@@ -211,6 +210,7 @@ function checkout() {
     });
 }
 
+// Function to turn the status to off
 function turnOff() {
     // Set enabled to off
     console.log("Set enabled to off");

@@ -27,6 +27,14 @@ module.exports = function(grunt) {
                 }
             }
         },
+        coffee: {
+            dist: {
+                files: {
+                    'javascripts/background.js': 'coffee/background.coffee',
+                    'javascripts/size.js': 'coffee/size.coffee'
+                }
+            }
+        },
         uglify: {
             dist: {
                 files: [{
@@ -37,14 +45,6 @@ module.exports = function(grunt) {
                 }]
             }
         },
-        /*        coffee: {
-            compile: {
-                files: {
-                    'javascripts/size.js': 'coffee/size.coffee',
-                    'javascripts/content.js': 'coffee/content.coffee'
-                }
-            }
-        },*/
         slim: {
             dist: {
                 files: {
@@ -92,6 +92,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-json-format');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-coffee');
-    grunt.registerTask('dist', ['clean', 'jshint', 'uglify', 'sass', 'slim', 'imagemin', 'json-format']);
+    grunt.registerTask('dist', ['clean', 'jshint', 'coffee', 'uglify', 'sass', 'slim', 'imagemin', 'json-format']);
 
 };

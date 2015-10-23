@@ -1,6 +1,4 @@
 $(document).ready(function() {
-
-
     var max_fields = 10; //maximum input boxes allowed
     var wrapper = $(".field-wrapper"); //Fields wrapper
     var removeBut = $(".remove_field"); //Fields wrapper
@@ -54,15 +52,12 @@ $(document).ready(function() {
 
     // Snipe button
     $('#clickMe').click(function() {
-
         /// Change the enabled status to on
         var statusStore = {};
         statusStore.enableStatus = 1;
         chrome.storage.local.set({
             statusStore: statusStore
         });
-
-
         // Send a signal to content.js to start running code to go to the first URL
         chrome.tabs.query({
             active: true,
@@ -72,11 +67,8 @@ $(document).ready(function() {
                 greeting: "snipeitnow"
             });
         });
-
-
         // Save URL in fields
         saveResults();
-
     });
 
     // Stop script button
@@ -90,7 +82,6 @@ $(document).ready(function() {
 
     });
 
-
     // Get auto checkout status and set the checkbox
     chrome.storage.local.get('statusStore2', function(items) {
         var statusStore2 = items.statusStore2;
@@ -100,7 +91,6 @@ $(document).ready(function() {
             $("#auto-checkout").prop('checked', false);
         }
     });
-
 
     // Checkout for me checkbox
     $("#auto-checkout").change(function() {
@@ -121,7 +111,6 @@ $(document).ready(function() {
             console.log(statusStore2);
         }
     });
-
 
     // Function to change enabled status and set button text
     function butText() {
@@ -151,15 +140,12 @@ $(document).ready(function() {
         var allURL = items.allURL;
         for (var key in allURL) {
             console.log('The retrieved key is "' + key + '" and the data is "' + allURL[key] + '"...');
-
             $("#" + key).val(allURL[key]);
-
         }
     });
 
 
 }); // End of document ready
-
 
 $("input[type='url']").on("click", function() {
     $(this).select();
