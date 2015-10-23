@@ -26,8 +26,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 });
 
-// Remove unavailable items from cart
-
 getLink().then(function(allURL) { // Get all registered URLs
     checkStatus();
     // var allURL = items.allURL;
@@ -42,9 +40,9 @@ getLink().then(function(allURL) { // Get all registered URLs
         // Add to cart function
         var checkSize = setInterval(function() {
             if ($('#size option').length) { // If product isn't already in cart and size dropdown exists
-                checkStatus();
                 console.log("Dropdown exist");
                 clearInterval(checkSize);
+                checkStatus();
                 getSize("tshirts").then(function(result) {
                     sizeVal = $("#size").find("option").filter(':contains(' + result + ')').val();
                 });
@@ -83,7 +81,7 @@ function checkStatus() {
     chrome.storage.local.get('statusStore', function(items) {
         var statusStore = items.statusStore.enableStatus;
         if (statusStore != 1) { // Check if enabled is on
-            console.log("something happened, stop script")
+            console.log("Status is set to off. Stopping your script.")
             return;
         }
     });
