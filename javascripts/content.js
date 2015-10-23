@@ -28,34 +28,26 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 getLink().then(function(allURL) { // Get all registered URLs
     checkStatus();
-    // var allURL = items.allURL;
     var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
-    // Get current URL position
-    var posNow = allURL.nowUrl;
-    // Get the URL to snipe at this time
-    var dataObj = ("putURL" + posNow).toString();
-    var gotoPage = allURL[dataObj];
-    // If current URL isn't saved URL, go to it. If not, add the item to cart.
+    var posNow = allURL.nowUrl; // Get current URL position
+    var gotoPage = allURL[("putURL" + posNow).toString()]; // Get the URL to snipe at this time
     if (window.location == gotoPage) {
-        // Add to cart function
         var checkSize = setInterval(function() {
             if ($('#size option').length) { // If product isn't already in cart and size dropdown exists
                 console.log("Dropdown exist");
                 clearInterval(checkSize);
                 checkStatus();
                 selectSize().then(function(sizeValue) {
-                    chrome.storage.local.get('sizePref', function(items) { // Get size preferences from storage
-                        if (sizeValue !== undefined) {
-                            $("#size").val(sizeValue);
-                            var checkCart = setInterval(function() {
-                                if (($("#size").val() === sizeValue) && ($("#cart-addf").length !== 0)) {
-                                    console.log("The size is correctly selected.");
-                                    addSize();
-                                    clearInterval(checkCart);
-                                }
-                            }, 10);
-                        }
-                    });
+                    if (sizeValue !== undefined) {
+                        $("#size").val(sizeValue);
+                        var checkCart = setInterval(function() {
+                            if (($("#size").val() === sizeValue) && ($("#cart-addf").length !== 0)) {
+                                console.log("The size is correctly selected.");
+                                addSize();
+                                clearInterval(checkCart);
+                            }
+                        }, 10);
+                    }
                 });
             } else if ($("#size").attr('type') == 'hidden') {
                 clearInterval(checkSize);
@@ -156,13 +148,9 @@ function goNext() {
 
 function addSize() {
     getLink().then(function(allURL) { // Get all registered URLs
-        // var allURL = items.allURL;
-        var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
-        // Get current URL position
+        var totalPos = Object.keys(allURL).length - 1;
         var posNow = allURL.nowUrl;
-        // Get the URL to snipe at this time
-        var dataObj = ("putURL" + posNow).toString();
-        var gotoPage = allURL[dataObj];
+        var gotoPage = allURL[("putURL" + posNow).toString()];
         $.ajax({
             url: $("#cart-addf").attr('action'),
             type: 'POST',
