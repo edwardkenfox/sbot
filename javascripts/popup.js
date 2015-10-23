@@ -83,9 +83,9 @@ $(document).ready(function() {
     });
 
     // Get auto checkout status and set the checkbox
-    chrome.storage.local.get('statusStore2', function(items) {
-        var statusStore2 = items.statusStore2;
-        if (statusStore2.autoCheckout == 1) {
+    chrome.storage.local.get('checkoutSwitch', function(items) {
+        console.log("this checkoutswich is " + items.checkoutSwitch)
+        if (items.checkoutSwitch == 1) {
             $("#auto-checkout").prop('checked', true);
         } else {
             $("#auto-checkout").prop('checked', false);
@@ -96,19 +96,10 @@ $(document).ready(function() {
     $("#auto-checkout").change(function() {
         if (this.checked) {
             // Set auto-checkout status to on
-            statusStore2 = {};
-            statusStore2.autoCheckout = 1;
-            chrome.storage.local.set({
-                statusStore2: statusStore2
-            });
+            chrome.storage.local.set({"checkoutSwitch": 1});
         } else {
             // Set auto-checkout status to off
-            statusStore2 = {};
-            statusStore2.autoCheckout = 0;
-            chrome.storage.local.set({
-                statusStore2: statusStore2
-            });
-            console.log(statusStore2);
+            chrome.storage.local.set({"checkoutSwitch": 0});
         }
     });
 

@@ -102,6 +102,15 @@ function checkStatus() {
     });
 }
 
+function checkCheckout() {
+    return new Promise(function(resolve) {
+        chrome.storage.local.get('checkoutSwitch', function(items) {
+            resolve(items.checkoutSwitch);
+            console.log("this checkoutswich from contentjs is " + items.checkoutSwitch)
+        });
+    });
+}
+
 function failSafe() {
     if (($('time b:contains("11:00am")').length > 0) && (window.location != gotoPage)) {
         console.log("URL doesn't exist, so skip item.");
@@ -205,22 +214,12 @@ function getLink() {
 // Function to go to checkout page
 function checkout() {
     turnOff();
-    // Get auto checkout status and process payment if on
-    chrome.storage.local.get('statusStore2', function(items) {
-        var statusStore2 = items.statusStore2;
-        if (statusStore2.autoCheckout == 1) {
-            var statusStore2 = {};
-            statusStore2.autoCheckout = 0;
-            chrome.storage.local.set({
-                statusStore2: statusStore2
-            });
+    checkCheckout().then(function(status) {
+        if (status == 1) {
+            // Get auto checkout status and process payment if on
             chrome.runtime.sendMessage({
                 greeting: "checkitout"
-            }, function(response) {
-                console.log("Sent a message to check out.");
             });
-        } else {
-            console.log('Auto check out is disabled.');
         }
     });
 }
