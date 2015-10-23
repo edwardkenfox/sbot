@@ -30,7 +30,8 @@ module.exports = function(grunt) {
         coffee: {
             dist: {
                 files: {
-                    'javascripts/background.js': 'coffee/background.coffee'
+                    'javascripts/background.js': 'coffee/background.coffee',
+                    'javascripts/size.js': 'coffee/size.coffee'
                 }
             }
         },
