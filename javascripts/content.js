@@ -43,20 +43,19 @@ getLink().then(function(allURL) { // Get all registered URLs
                 console.log("Dropdown exist");
                 clearInterval(checkSize);
                 checkStatus();
-                getSize("tshirts").then(function(result) {
-                    sizeVal = $("#size").find("option").filter(':contains(' + result + ')').val();
-                });
-                chrome.storage.local.get('sizePref', function(items) { // Get size preferences from storage
-                    if (sizeVal !== undefined) {
-                        $("#size").val(sizeVal);
-                        var checkCart = setInterval(function() {
-                            if (($("#size").val() === sizeVal) && ($("#cart-addf").length !== 0)) {
-                                console.log("The size is correctly selected.");
-                                addSize();
-                                clearInterval(checkCart);
-                            }
-                        }, 10);
-                    }
+                selectSize().then(function(sizeValue) {
+                    chrome.storage.local.get('sizePref', function(items) { // Get size preferences from storage
+                        if (sizeValue !== undefined) {
+                            $("#size").val(sizeValue);
+                            var checkCart = setInterval(function() {
+                                if (($("#size").val() === sizeValue) && ($("#cart-addf").length !== 0)) {
+                                    console.log("The size is correctly selected.");
+                                    addSize();
+                                    clearInterval(checkCart);
+                                }
+                            }, 10);
+                        }
+                    });
                 });
             } else if ($("#size").attr('type') == 'hidden') {
                 clearInterval(checkSize);
@@ -76,6 +75,19 @@ getLink().then(function(allURL) { // Get all registered URLs
 
 
 fillforms();
+
+function selectSize() {
+    console.log("size selector start")
+    return new Promise(function(resolve) {
+        getSize("tshirts").then(function(result) {
+            if (window.location.href.indexOf("t-shirts") > -1) {
+                console.log("size selector in tshirt url")
+                sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
+                resolve(sizeValue);
+            }
+        });
+    });
+}
 
 function checkStatus() {
     chrome.storage.local.get('statusStore', function(items) {
@@ -143,7 +155,7 @@ function addSize() {
         $.ajax({
             url: $("#cart-addf").attr('action'),
             type: 'POST',
-            data: "size=" + sizeVal,
+            data: "size=" + sizeValue,
             success: function() {
                 goNext();
             }
