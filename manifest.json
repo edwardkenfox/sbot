@@ -1,10 +1,8 @@
 {
-    // Required
     "manifest_version": 2,
     "name": "SoS Bot",
     "version": "1.0",
 
-    // Recommended
     "description": "This bot adds items to your cart  and fills forms automatically.",
     "icons": {
         "16": "images/icon16.png",

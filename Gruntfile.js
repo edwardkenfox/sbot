@@ -28,7 +28,7 @@ module.exports = function(grunt) {
             }
         },
         uglify: {
-            production: {
+            dist: {
                 files: [{
                     expand: true,
                     cwd: 'javascripts/',
@@ -46,7 +46,7 @@ module.exports = function(grunt) {
             }
         },*/
         slim: {
-            compile: {
+            dist: {
                 files: {
                     'dist/popup-form.html': 'popup-form.html.slim',
                     'dist/popup-size.html': 'popup-size.html.slim',
@@ -59,6 +59,19 @@ module.exports = function(grunt) {
                 files: {
                     'dist/stylesheets/style.css': 'stylesheets/style.scss'
                 }
+            }
+        },
+        'json-format': {
+            test: {
+                options: {
+                    indent: 2,
+                    remove: ['_comment']
+                },
+                files: [{
+                    expand: true,
+                    src: ['manifest.json'],
+                    dest: 'dist/'
+                }]
             }
         },
         watch: {
@@ -76,8 +89,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-imagemin'); // export images
     grunt.loadNpmTasks('grunt-contrib-uglify'); //minify and export js
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-json-format');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-coffee');
-    grunt.registerTask('dist', ['clean', 'jshint', 'uglify', 'sass', 'slim', 'imagemin']);
+    grunt.registerTask('dist', ['clean', 'jshint', 'uglify', 'sass', 'slim', 'imagemin', 'json-format']);
 
 };
