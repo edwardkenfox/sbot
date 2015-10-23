@@ -14,10 +14,10 @@
       saveAllSizes = ->
         sizePref = undefined
         sizePref =
-          tops: 'Large'
+          tshirts: 'Large'
           shoes: '10.5'
-        $('#tops select').each (idx, element) ->
-          sizePref.tops = @value
+        $('#tshirts select').each (idx, element) ->
+          sizePref.tshirts = @value
           return
         $('#shoes select').each (idx, element) ->
           sizePref.shoes = @value

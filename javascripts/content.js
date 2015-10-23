@@ -47,7 +47,7 @@ chrome.storage.local.get('statusStore', function(items) {
                 if ($('#size option').length && statusStore == 1) { // If product isn't already in cart and size dropdown exists
                     console.log("Dropdown exist");
                     clearInterval(checkSize);
-                    getSize("tops").then(function(result) {
+                    getSize("tshirts").then(function(result) {
                         sizeVal = $("#size").find("option").filter(':contains(' + result + ')').val();
                     });
                     chrome.storage.local.get('sizePref', function(items) { // Get size preferences from storage

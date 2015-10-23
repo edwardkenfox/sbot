@@ -18,11 +18,11 @@
           var sizePref;
           sizePref = void 0;
           sizePref = {
-            tops: 'Large',
+            tshirts: 'Large',
             shoes: '10.5'
           };
-          $('#tops select').each(function(idx, element) {
-            sizePref.tops = this.value;
+          $('#tshirts select').each(function(idx, element) {
+            sizePref.tshirts = this.value;
           });
           $('#shoes select').each(function(idx, element) {
             sizePref.shoes = this.value;
