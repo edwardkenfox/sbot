@@ -48,9 +48,9 @@ module.exports = function(grunt) {
         slim: {
             dist: {
                 files: {
-                    'dist/popup-form.html': 'popup-form.html.slim',
-                    'dist/popup-size.html': 'popup-size.html.slim',
-                    'dist/popup-main.html': 'popup-main.html.slim'
+                    'dist/popup-form.html': 'slim/popup-form.html.slim',
+                    'dist/popup-size.html': 'slim/popup-size.html.slim',
+                    'dist/popup-main.html': 'slim/popup-main.html.slim'
                 }
             }
         },
