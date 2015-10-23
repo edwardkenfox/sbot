@@ -6,6 +6,19 @@ module.exports = function(grunt) {
                 'dist'
             ]
         },
+        imagemin: {
+            dist: {
+                options: {
+                    optimizationLevel: 3
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'images/',
+                    src: ['**/*.{png,jpg,gif,svg}'],
+                    dest: 'dist/images/',
+                }]
+            }
+        },
         jshint: {
             files: ['Gruntfile.js', 'javascripts/size.js'],
             options: {
@@ -48,11 +61,14 @@ module.exports = function(grunt) {
         }
     });
     grunt.loadNpmTasks('grunt-contrib-clean'); // clean build folder
+    grunt.loadNpmTasks('grunt-slim'); // export slim to html
+    grunt.loadNpmTasks('grunt-contrib-sass'); // export stylesheet to css
+    grunt.loadNpmTasks('grunt-contrib-imagemin'); // export images
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-coffee');
     grunt.registerTask('default', ['jshint']);
     grunt.registerTask('default', ['sass']);
-    grunt.loadNpmTasks('grunt-slim');
+    grunt.registerTask('default', ['imagemin']);
+
 };
