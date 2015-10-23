@@ -25,16 +25,16 @@ module.exports = function(grunt) {
         slim: {
             compile: {
                 files: {
-                    'popup-form.html': 'popup-form.html.slim',
-                    'popup-size.html': 'popup-size.html.slim',
-                    'popup-main.html': 'popup-main.html.slim'
+                    'dist/popup-form.html': 'popup-form.html.slim',
+                    'dist/popup-size.html': 'popup-size.html.slim',
+                    'dist/popup-main.html': 'popup-main.html.slim'
                 }
             }
         },
         sass: {
             dist: {
                 files: {
-                    'style.css': 'stylesheets/style.scss'
+                    'dist/stylesheets/style.css': 'stylesheets/style.scss'
                 }
             }
         },
