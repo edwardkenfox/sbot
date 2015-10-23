@@ -27,14 +27,24 @@ module.exports = function(grunt) {
                 }
             }
         },
-        coffee: {
+        uglify: {
+            production: {
+                files: [{
+                    expand: true,
+                    cwd: 'javascripts/',
+                    src: '**/*.js',
+                    dest: 'dist/javascripts/'
+                }]
+            }
+        },
+        /*        coffee: {
             compile: {
                 files: {
                     'javascripts/size.js': 'coffee/size.coffee',
                     'javascripts/content.js': 'coffee/content.coffee'
                 }
             }
-        },
+        },*/
         slim: {
             compile: {
                 files: {
@@ -64,11 +74,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-slim'); // export slim to html
     grunt.loadNpmTasks('grunt-contrib-sass'); // export stylesheet to css
     grunt.loadNpmTasks('grunt-contrib-imagemin'); // export images
+    grunt.loadNpmTasks('grunt-contrib-uglify'); //minify and export js
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-coffee');
     grunt.registerTask('default', ['jshint']);
     grunt.registerTask('default', ['sass']);
     grunt.registerTask('default', ['imagemin']);
+
 
 };
