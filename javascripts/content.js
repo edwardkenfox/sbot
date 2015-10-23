@@ -79,13 +79,17 @@ fillforms();
 function selectSize() {
     console.log("size selector start")
     return new Promise(function(resolve) {
-        getSize("tshirts").then(function(result) {
-            if (window.location.href.indexOf("t-shirts") > -1) {
-                console.log("size selector in tshirt url")
+        if (window.location.href.indexOf("t-shirts") > -1) {
+            getSize("tshirts").then(function(result) {
                 sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
                 resolve(sizeValue);
-            }
-        });
+            });
+        } else if (window.location.href.indexOf("pants") > -1) {
+            getSize("pants").then(function(result) {
+                sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
+                resolve(sizeValue);
+            });
+        }
     });
 }
 
