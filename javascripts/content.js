@@ -26,45 +26,48 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 });
 
-getLink().then(function(allURL) { // Get all registered URLs
-    checkStatus();
-    var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
-    var posNow = allURL.nowUrl; // Get current URL position
-    var gotoPage = allURL[("putURL" + posNow).toString()]; // Get the URL to snipe at this time
-    if (window.location == gotoPage) {
-        var checkSize = setInterval(function() {
-            if ($('#size option').length) { // If product isn't already in cart and size dropdown exists
-                console.log("Dropdown exist");
-                clearInterval(checkSize);
-                checkStatus();
-                selectSize().then(function(sizeValue) {
-                    if (sizeValue !== undefined) {
-                        $("#size").val(sizeValue);
-                        var checkCart = setInterval(function() {
-                            if (($("#size").val() === sizeValue) && ($("#cart-addf").length !== 0)) {
-                                console.log("The size is correctly selected.");
-                                addSize();
-                                clearInterval(checkCart);
+
+checkStatus().then(function(botStatus) {
+    if (botStatus == 1) {
+        getLink().then(function(allURL) { // Get all registered URLs
+            var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
+            var posNow = allURL.nowUrl; // Get current URL position
+            var gotoPage = allURL[("putURL" + posNow).toString()]; // Get the URL to snipe at this time
+            if (window.location == gotoPage) {
+                var checkSize = setInterval(function() {
+                    if ($('#size option').length) { // If product isn't already in cart and size dropdown exists
+                        console.log("Dropdown exist");
+                        clearInterval(checkSize);
+                        checkStatus();
+                        selectSize().then(function(sizeValue) {
+                            if (sizeValue !== undefined) {
+                                $("#size").val(sizeValue);
+                                var checkCart = setInterval(function() {
+                                    if (($("#size").val() === sizeValue) && ($("#cart-addf").length !== 0)) {
+                                        console.log("The size is correctly selected.");
+                                        addSize();
+                                        clearInterval(checkCart);
+                                    }
+                                }, 10);
                             }
-                        }, 10);
+                        });
+                    } else if ($("#size").attr('type') == 'hidden') {
+                        clearInterval(checkSize);
+                        checkStatus();
+                        console.log("Dropdown doesnt exist");
+                        addOneSize();
                     }
-                });
-            } else if ($("#size").attr('type') == 'hidden') {
-                clearInterval(checkSize);
-                checkStatus();
-                console.log("Dropdown doesnt exist");
-                addOneSize();
+                }, 10);
+            } else if (gotoPage === undefined) { // If URL is not defined
+                console.log("URL is undefined! Go to next.");
+                // Check if there is a next URL to be sniped.
+                goNext();
+            } else {
+                failSafe();
             }
-        }, 10);
-    } else if (gotoPage === undefined) { // If URL is not defined
-        console.log("URL is undefined! Go to next.");
-        // Check if there is a next URL to be sniped.
-        goNext();
-    } else {
-        failSafe();
+        });
     }
 });
-
 
 fillforms();
 
@@ -93,12 +96,10 @@ function selectSize() {
 }
 
 function checkStatus() {
-    chrome.storage.local.get('statusStore', function(items) {
-        var statusStore = items.statusStore.enableStatus;
-        if (statusStore != 1) { // Check if enabled is on
-            console.log("Status is set to off. Stopping your script.")
-            return;
-        }
+    return new Promise(function(resolve) {
+        chrome.storage.local.get('statusStore', function(items) {
+            resolve(items.statusStore.enableStatus);
+        });
     });
 }
 
