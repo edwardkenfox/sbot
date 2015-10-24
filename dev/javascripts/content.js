@@ -91,6 +91,11 @@ function selectSize() {
                     resolve(sizeValue);
                 }
             });
+        } else if (window.location.href.indexOf("jackets") > -1) {
+            getSize("jackets").then(function(result) {
+                sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
+                resolve(sizeValue);
+            });
         }
     });
 }
