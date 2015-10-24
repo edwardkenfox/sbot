@@ -19,6 +19,7 @@
           sizePref = void 0;
           sizePref = {
             jackets: 'Large',
+            shirts: 'Medium',
             tshirts: 'Large',
             shoes: '10.5',
             pants: 'Medium',
@@ -26,6 +27,9 @@
           };
           $('#jackets select').each(function(idx, element) {
             sizePref.jackets = this.value;
+          });
+          $('#shirts select').each(function(idx, element) {
+            sizePref.shirts = this.value;
           });
           $('#tshirts select').each(function(idx, element) {
             sizePref.tshirts = this.value;

@@ -15,12 +15,16 @@
         sizePref = undefined
         sizePref =
           jackets: 'Large'
+          shirts: 'Medium'
           tshirts: 'Large'
           shoes: '10.5'
           pants: 'Medium'
           pantsalt: '32'
         $('#jackets select').each (idx, element) ->
           sizePref.jackets = @value
+          return
+        $('#shirts select').each (idx, element) ->
+          sizePref.shirts = @value
           return
         $('#tshirts select').each (idx, element) ->
           sizePref.tshirts = @value
