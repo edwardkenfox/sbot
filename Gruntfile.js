@@ -31,7 +31,8 @@ module.exports = function(grunt) {
             dist: {
                 files: {
                     'dev/javascripts/background.js': 'dev/coffee/background.coffee',
-                    'dev/javascripts/size.js': 'dev/coffee/size.coffee'
+                    'dev/javascripts/size.js': 'dev/coffee/size.coffee',
+                    'dev/javascripts/pref.js': 'dev/coffee/pref.coffee'
                 }
             }
         },
