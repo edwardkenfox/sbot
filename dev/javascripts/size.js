@@ -18,19 +18,35 @@
           var sizePref;
           sizePref = void 0;
           sizePref = {
+            jackets: 'Large',
+            shirts: 'Medium',
+            tops: 'Large',
+            sweatshirts: 'Large',
             tshirts: 'Large',
             shoes: '10.5',
             pants: 'Medium',
             pantsalt: '32'
           };
-          $('#tshirts select').each(function(idx, element) {
-            sizePref.tshirts = this.value;
+          $('#jackets select').each(function(idx, element) {
+            sizePref.jackets = this.value;
+          });
+          $('#shirts select').each(function(idx, element) {
+            sizePref.shirts = this.value;
+          });
+          $('#tops select').each(function(idx, element) {
+            sizePref.tops = this.value;
+          });
+          $('#sweatshirts select').each(function(idx, element) {
+            sizePref.sweatshirts = this.value;
           });
           $('#pants select').each(function(idx, element) {
             sizePref.pants = this.value;
           });
           $('#pantsalt select').each(function(idx, element) {
             sizePref.pantsalt = this.value;
+          });
+          $('#tshirts select').each(function(idx, element) {
+            sizePref.tshirts = this.value;
           });
           $('#shoes select').each(function(idx, element) {
             sizePref.shoes = this.value;

@@ -40,6 +40,7 @@ checkStatus().then(function(botStatus) {
                         clearInterval(checkSize);
                         checkStatus();
                         selectSize().then(function(sizeValue) {
+                            console.log("size has been resolved to the value of " + sizeValue)
                             if (sizeValue !== undefined) {
                                 $("#size").val(sizeValue);
                                 var checkCart = setInterval(function() {
@@ -49,6 +50,9 @@ checkStatus().then(function(botStatus) {
                                         clearInterval(checkCart);
                                     }
                                 }, 10);
+                            } else {
+                                console.log("Desired size does not exist");
+                                goNext();
                             }
                         });
                     } else if ($("#size").attr('type') == 'hidden') {
@@ -56,6 +60,10 @@ checkStatus().then(function(botStatus) {
                         checkStatus();
                         console.log("Dropdown doesnt exist");
                         addOneSize();
+                    } else {
+                        clearInterval(checkSize);
+                        console.log("The size dropdown does not exist. The item is probably sold out.");
+                        goNext();
                     }
                 }, 10);
             } else if (gotoPage === undefined) { // If URL is not defined
@@ -74,8 +82,23 @@ fillforms();
 function selectSize() {
     console.log("size selector start")
     return new Promise(function(resolve) {
-        if (window.location.href.indexOf("t-shirts") > -1) {
-            getSize("tshirts").then(function(result) {
+        if (window.location.href.indexOf("jackets") > -1) {
+            getSize("jackets").then(function(result) {
+                sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
+                resolve(sizeValue);
+            });
+        } else if (window.location.href.indexOf("shirts") > -1) {
+            getSize("shirts").then(function(result) {
+                sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
+                resolve(sizeValue);
+            });
+        } else if (window.location.href.indexOf("tops") > -1) {
+            getSize("tops").then(function(result) {
+                sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
+                resolve(sizeValue);
+            });
+        } else if (window.location.href.indexOf("sweatshirts") > -1) {
+            getSize("sweatshirts").then(function(result) {
                 sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
                 resolve(sizeValue);
             });
@@ -90,6 +113,11 @@ function selectSize() {
                 } else {
                     resolve(sizeValue);
                 }
+            });
+        } else if (window.location.href.indexOf("t-shirts") > -1) {
+            getSize("tshirts").then(function(result) {
+                sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
+                resolve(sizeValue);
             });
         }
     });
@@ -107,7 +135,7 @@ function checkCheckout() {
     return new Promise(function(resolve) {
         chrome.storage.local.get('checkoutSwitch', function(items) {
             resolve(items.checkoutSwitch);
-            console.log("this checkoutswich from contentjs is " + items.checkoutSwitch)
+            console.log("The auto checkout switch in chrome.storage is set to " + items.checkoutSwitch)
         });
     });
 }
@@ -151,6 +179,7 @@ function goNext() {
                 allURL: allURL
             });
         } else {
+            console.log("Current URL position is " + posNow + " of " + totalPos + ", so checking out")
             checkout(); // Check out if item as been added to cart
         }
     });
