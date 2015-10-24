@@ -13,14 +13,14 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: 'images/',
+                    cwd: 'dev/images/',
                     src: ['**/*.{png,jpg,gif,svg}'],
                     dest: 'dist/images/',
                 }]
             }
         },
         jshint: {
-            files: ['Gruntfile.js', 'javascripts/size.js'],
+            files: ['Gruntfile.js', 'dev/javascripts/size.js'],
             options: {
                 globals: {
                     jQuery: true
@@ -30,8 +30,9 @@ module.exports = function(grunt) {
         coffee: {
             dist: {
                 files: {
-                    'javascripts/background.js': 'coffee/background.coffee',
-                    'javascripts/size.js': 'coffee/size.coffee'
+                    'dev/javascripts/background.js': 'dev/coffee/background.coffee',
+                    'dev/javascripts/size.js': 'dev/coffee/size.coffee',
+                    'dev/javascripts/pref.js': 'dev/coffee/pref.coffee'
                 }
             }
         },
@@ -39,7 +40,7 @@ module.exports = function(grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: 'javascripts/',
+                    cwd: 'dev/javascripts/',
                     src: '**/*.js',
                     dest: 'dist/javascripts/'
                 }]
@@ -48,30 +49,29 @@ module.exports = function(grunt) {
         slim: {
             dist: {
                 files: {
-                    'dist/popup-form.html': 'slim/popup-form.html.slim',
-                    'dist/popup-size.html': 'slim/popup-size.html.slim',
-                    'dist/popup-main.html': 'slim/popup-main.html.slim'
+                    'dist/popup-form.html': 'dev/slim/popup-form.html.slim',
+                    'dist/popup-size.html': 'dev/slim/popup-size.html.slim',
+                    'dist/popup-main.html': 'dev/slim/popup-main.html.slim'
                 }
             }
         },
         sass: {
             dist: {
                 files: {
-                    'dist/stylesheets/style.css': 'stylesheets/style.scss'
+                    'dist/stylesheets/style.css': 'dev/stylesheets/style.scss'
                 }
             }
         },
         'json-format': {
-            test: {
+            dist: {
                 options: {
                     indent: 2,
                     remove: ['_comment']
                 },
-                files: [{
-                    expand: true,
-                    src: ['manifest.json'],
-                    dest: 'dist/'
-                }]
+                files: {
+
+                    'dist/manifest.json': 'dev/manifest.json'
+                }
             }
         },
         watch: {
