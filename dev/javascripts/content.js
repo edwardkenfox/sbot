@@ -74,13 +74,23 @@ fillforms();
 function selectSize() {
     console.log("size selector start")
     return new Promise(function(resolve) {
-        if (window.location.href.indexOf("shirts") > -1) {
+        if (window.location.href.indexOf("jackets") > -1) {
+            getSize("jackets").then(function(result) {
+                sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
+                resolve(sizeValue);
+            });
+        } else if (window.location.href.indexOf("shirts") > -1) {
             getSize("shirts").then(function(result) {
                 sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
                 resolve(sizeValue);
             });
-        } else if (window.location.href.indexOf("t-shirts") > -1) {
-            getSize("tshirts").then(function(result) {
+        } else if (window.location.href.indexOf("tops") > -1) {
+            getSize("tops").then(function(result) {
+                sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
+                resolve(sizeValue);
+            });
+        } else if (window.location.href.indexOf("sweatshirts") > -1) {
+            getSize("sweatshirts").then(function(result) {
                 sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
                 resolve(sizeValue);
             });
@@ -96,8 +106,8 @@ function selectSize() {
                     resolve(sizeValue);
                 }
             });
-        } else if (window.location.href.indexOf("jackets") > -1) {
-            getSize("jackets").then(function(result) {
+        } else if (window.location.href.indexOf("t-shirts") > -1) {
+            getSize("tshirts").then(function(result) {
                 sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
                 resolve(sizeValue);
             });

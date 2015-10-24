@@ -16,6 +16,8 @@
         sizePref =
           jackets: 'Large'
           shirts: 'Medium'
+          tops: 'Large'
+          sweatshirts: 'Large'
           tshirts: 'Large'
           shoes: '10.5'
           pants: 'Medium'
@@ -26,14 +28,20 @@
         $('#shirts select').each (idx, element) ->
           sizePref.shirts = @value
           return
-        $('#tshirts select').each (idx, element) ->
-          sizePref.tshirts = @value
+        $('#tops select').each (idx, element) ->
+          sizePref.tops = @value
+          return
+        $('#sweatshirts select').each (idx, element) ->
+          sizePref.sweatshirts = @value
           return
         $('#pants select').each (idx, element) ->
           sizePref.pants = @value
           return
         $('#pantsalt select').each (idx, element) ->
           sizePref.pantsalt = @value
+          return
+        $('#tshirts select').each (idx, element) ->
+          sizePref.tshirts = @value
           return
         $('#shoes select').each (idx, element) ->
           sizePref.shoes = @value
