@@ -1,28 +1,33 @@
 // Variables
 var checkoutLink = 'https://www.supremenewyork.com/checkout';
 var cartLink = 'https://www.supremenewyork.com/cart';
+var allLink = 'http://www.supremenewyork.com/shop/all';
+var currentLink = window.location.href;
 
 // Listen for the go-ahead and go to first page to start sniping
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.greeting == "snipeitnow") {
+    chrome.storage.local.remove("theRightLink");
     chrome.storage.local.get("allURL", function(items) {
-      var allURL = items.allURL;
-      // Load the first URL
-      var firstPage = allURL.putURL1;
-      if (window.location.href != checkoutLink) {
+      // Load the first URL/keyword
+      var firstPage = items.allURL.putURL1;
+      console.log("The first keyword/URL with variable name firstPage is " + firstPage);
+      console.log("The current URL (window.location.href) is " + window.location.href);
+      if (firstPage.indexOf("http://www.supremenewyork.com/shop/") >= 0) { // Is a link
         window.location.href = firstPage;
-        console.log("The first URL is " + firstPage + "and is not" + checkoutLink);
-      } else if {
-
+        console.log("Data received contains URL. Going to URL.")
+      } else if (window.location.href == 'http://www.supremenewyork.com/shop/all') {
+        console.log("Data received contains keyword and URL is shop/all. Checking product.");
+        findFirstProductLink().then(function(theRightLink) {
+          console.log("The first link on snipe is " + theRightLink);
+          console.log("The link that we have to go to is " + theRightLink)
+          chrome.storage.local.set({theRightLink: theRightLink}, function() {
+            window.location.href = theRightLink;
+          });
+        });
       } else {
-        var win = window.open(firstPage, '_blank');
-        if (win) {
-          //Browser has allowed it to be opened
-          win.focus();
-        } else {
-          //Browser has blocked it
-          alert('Please allow popups for this site');
-        }
+        console.log("Data received contains keyword and URL is not shop/all. Going to shop/all.");
+        window.location.href = allLink;
       }
     });
   }
@@ -30,55 +35,143 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 checkStatus().then(function(botStatus) {
   if (botStatus == 1) {
-    getLink().then(function(allURL) { // Get all registered URLs
-      var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
-      var posNow = allURL.nowUrl; // Get current URL position
-      var gotoPage = allURL[("putURL" + posNow).toString()]; // Get the URL to snipe at this time
-      if (window.location == gotoPage) {
-        var checkSize = setInterval(function() {
-          if ($('#size option').length) { // If product isn't already in cart and size dropdown exists
-            console.log("Dropdown exist");
-            clearInterval(checkSize);
-            checkStatus();
-            selectSize().then(function(sizeValue) {
-              console.log("size has been resolved to the value of " + sizeValue)
-              if (sizeValue !== undefined) {
-                $("#size").val(sizeValue);
-                var checkCart = setInterval(function() {
-                  if (($("#size").val() === sizeValue) && ($("#cart-addf").length !== 0)) {
-                    console.log("The size is correctly selected.");
-                    addSize();
-                    clearInterval(checkCart);
-                  }
-                }, 10);
-              } else {
-                console.log("Desired size does not exist");
-                goNext();
-              }
-            });
-          } else if ($("#size").attr('type') == 'hidden') {
-            clearInterval(checkSize);
-            checkStatus();
-            console.log("Dropdown doesnt exist");
-            addOneSize();
-          } else {
-            clearInterval(checkSize);
-            console.log("The size dropdown does not exist. The item is probably sold out.");
-            goNext();
-          }
-        }, 10);
-      } else if (gotoPage === undefined) { // If URL is not defined
-        console.log("URL is undefined! Go to next.");
-        // Check if there is a next URL to be sniped.
-        goNext();
+    chrome.storage.local.get('theRightLink', function(items) { // Get size preferences from storage
+      if (theRightLink !== undefined) {
+        console.log("The right link is read as " + theRightLink);
+        if (window.location.href == theRightLink) {
+          console.log("The current URL is correctly matched as " + theRightLink);
+          var checkSize = setInterval(function() {
+            if ($('#size option').length) { // If product isn't already in cart and size dropdown exists
+              console.log("Dropdown exist");
+              clearInterval(checkSize);
+              checkStatus();
+              selectSize().then(function(sizeValue) {
+                console.log("size has been resolved to the value of " + sizeValue)
+                if (sizeValue !== undefined) {
+                  $("#size").val(sizeValue);
+                  var checkCart = setInterval(function() {
+                    if (($("#size").val() === sizeValue) && ($("#cart-addf").length !== 0)) {
+                      console.log("The size is correctly selected.");
+                      addSize();
+                      clearInterval(checkCart);
+                    }
+                  }, 10);
+                } else {
+                  console.log("Desired size does not exist");
+                  goNext();
+                }
+              });
+            } else if ($("#size").attr('type') == 'hidden') {
+              clearInterval(checkSize);
+              checkStatus();
+              console.log("Dropdown doesnt exist");
+              addOneSize();
+            }
+          }, 10);
+
+        } else {
+          window.location.href = theRightLink;
+        }
       } else {
-        failSafe();
+        window.location.href = allLink;
       }
     });
   }
 });
 
-fillforms();
+
+/*
+checkStatus().then(function(botStatus) {
+  if (botStatus == 1) {
+    getLink().then(function(allURL) { // Get all registered URLs
+      var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
+      var posNow = allURL.nowUrl; // Get current URL position
+      var gotoPage = allURL[("putURL" + posNow).toString()]; // Get the URL to snipe at this time
+
+      switch (window.location) {
+        case (gotoPage):
+          console.log("We reached product page as data sent was a link.")
+        case (allLink):
+          console.log("We reached all page as data sent was a keyword. You should search for the right href now")
+      }
+
+            if (window.location == gotoPage) {
+              var checkSize = setInterval(function() {
+                if ($('#size option').length) { // If product isn't already in cart and size dropdown exists
+                  console.log("Dropdown exist");
+                  clearInterval(checkSize);
+                  checkStatus();
+                  selectSize().then(function(sizeValue) {
+                    console.log("size has been resolved to the value of " + sizeValue)
+                    if (sizeValue !== undefined) {
+                      $("#size").val(sizeValue);
+                      var checkCart = setInterval(function() {
+                        if (($("#size").val() === sizeValue) && ($("#cart-addf").length !== 0)) {
+                          console.log("The size is correctly selected.");
+                          addSize();
+                          clearInterval(checkCart);
+                        }
+                      }, 10);
+                    } else {
+                      console.log("Desired size does not exist");
+                      goNext();
+                    }
+                  });
+                } else if ($("#size").attr('type') == 'hidden') {
+                  clearInterval(checkSize);
+                  checkStatus();
+                  console.log("Dropdown doesnt exist");
+                  addOneSize();
+                } else {
+                  clearInterval(checkSize);
+                  console.log("The size dropdown does not exist. The item is probably sold out.");
+                  goNext();
+                }
+              }, 10);
+            } else if (gotoPage === undefined) { // If URL is not defined
+              console.log("URL is undefined! Go to next.");
+              // Check if there is a next URL to be sniped.
+              goNext();
+            } else {
+              failSafe();
+            }
+
+
+    });
+  }
+});*/
+
+function findFirstProduct() {
+  return new Promise(function(resolve) {
+    getLink().then(function(allURL) {
+      var theRightProduct = allURL.putURL1;
+      console.log("The data(s) received are as follows " + theRightProduct)
+      resolve(theRightProduct);
+    });
+  });
+}
+
+function findFirstProductLink() {
+  return new Promise(function(resolve) {
+      findFirstProduct().then(function(theRightProduct) {
+          console.log($("img[alt='" + theRightProduct + "']"));
+
+          $('.inner-article a img').each(function() {
+              if ($(this).attr("alt").indexOf(theRightProduct) >= 0) {
+                var theRightLink = $(this).parent().attr("href");
+                var theRightLink = "http://www.supremenewyork.com" + theRightLink;
+                resolve(theRightLink);
+              }
+          });
+
+
+      });
+  });
+};
+
+
+
+
 
 function selectSize() {
   console.log("size selector start")
@@ -123,6 +216,8 @@ function selectSize() {
     }
   });
 }
+
+
 
 function checkStatus() {
   return new Promise(function(resolve) {
