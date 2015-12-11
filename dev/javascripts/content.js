@@ -49,10 +49,8 @@ function testPromise() {
       imgProd.each(function () {
         if ($(this).attr("alt").indexOf(theRightProduct) >= 0) {
           var theRightLink = $(this).parent().attr("href");
-          console.log("the right link is " + theRightLink)
           if (theRightLink.indexOf("black") >= 0) {
             var theRightLink = "http://www.supremenewyork.com" + theRightLink;
-            console.log("the right link with right color is " + theRightLink);
             resolve(theRightLink);
           }
         }
@@ -61,7 +59,7 @@ function testPromise() {
     });
   });
   p1.then(function (theValue) {
-    console.log("success and going to " + theValue);
+    console.log("Success and the link is " + theValue);
     window.location.href = theValue;
     chrome.storage.local.set({
       theRightLink: theValue
@@ -70,8 +68,10 @@ function testPromise() {
     chrome.storage.local.get('theRightLink', function (result) { // Get size preferences from storage
       var theRightLink = result.theRightLink;
       if (window.location.href != theRightLink) {
+        console.log("Failure and going to " + allLink);
         window.location.href = allLink;
       } else {
+        console.log("On product page, executing add to cart");
         var checkSize = setInterval(function () {
           if ($('#size option').length) { // If product isn't already in cart and size dropdown exists
             console.log("Dropdown exist");
@@ -102,7 +102,7 @@ function testPromise() {
         }, 10);
       }
     });
-    console.log("failure and going to " + allLink);
+
   });
 }
 
