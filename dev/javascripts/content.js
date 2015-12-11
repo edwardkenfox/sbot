@@ -19,13 +19,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       } else if (window.location.href == 'http://www.supremenewyork.com/shop/all') {
         console.log("Data received contains keyword and URL is shop/all. Checking product.");
         findFirstProductLink().then(function(theRightLink) {
-          console.log("The first link on snipe is " + theRightLink);
-          console.log("The link that we have to go to is " + theRightLink)
-          chrome.storage.local.set({
-            theRightLink: theRightLink
-          }, function() {
+
+          console.log(theRightLink);
+          if (theRightLink.indexOf("shop") >= 0) {
+            console.log("The first link on snipe is " + theRightLink);
+            console.log("The link that we have to go to is " + theRightLink)
             window.location.href = theRightLink;
-          });
+          } else {
+            console.log("does not contain shop");
+            window.location.href = allLink;
+          }
         });
       } else {
         console.log("Data received contains keyword and URL is not shop/all. Going to shop/all.");
@@ -34,15 +37,18 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     });
   }
 });
-
 checkStatus().then(function(botStatus) {
   if (botStatus == 1) {
-    chrome.storage.local.get('theRightLink', function(result) { // Get size preferences from storage
-      var theRightLink = result.theRightLink;
-      console.log("The right link is read from the storage as " + theRightLink);
-      if (theRightLink !== undefined) {
-        console.log("The right link is read as " + theRightLink);
-        if (window.location.href == theRightLink) {
+    chrome.storage.local.get('theRightLink', function(result) {
+      var theRightLink = result.theRightLink
+
+
+
+        if ((theRightLink != undefined) && (window.location.href != theRightLink)) {
+          console.log("The first link on snipe is " + theRightLink);
+          console.log("The link that we have to go to is " + theRightLink)
+          window.location.href = theRightLink;
+        } else if (window.location.href == theRightLink) {
           console.log("The current URL is correctly matched as " + theRightLink);
           var checkSize = setInterval(function() {
             if ($('#size option').length) { // If product isn't already in cart and size dropdown exists
@@ -73,15 +79,71 @@ checkStatus().then(function(botStatus) {
             }
           }, 10);
 
+        } else if (window.location.href == allLink) {
+
+          console.log("From the loop going to prd page");
+          findFirstProductLink().then(function(theRightLink) {
+            if (theRightLink.indexOf("shop") >= 0) {
+              console.log("The first link contains shop and to snipe is " + theRightLink);
+              console.log("The link that we have to go to is " + theRightLink)
+              window.location.href = theRightLink;
+            } else {
+              console.log("we are o");
+              window.location.href = allLink;
+            }
+          });
+
         } else {
-          window.location.href = theRightLink;
+          console.log("got no link");
+          window.location.href = allLink;
         }
-      } else {
-        window.location.href = allLink;
-      }
+
     });
+    /*    chrome.storage.local.get('theRightLink', function(result) { // Get size preferences from storage
+          var theRightLink = result.theRightLink;
+          console.log("The right link is read from the storage as " + theRightLink);
+          if (theRightLink !== undefined) {
+            console.log("The right link is read as " + theRightLink);
+            if (window.location.href == theRightLink) {
+              console.log("The current URL is correctly matched as " + theRightLink);
+              var checkSize = setInterval(function() {
+                if ($('#size option').length) { // If product isn't already in cart and size dropdown exists
+                  console.log("Dropdown exist");
+                  clearInterval(checkSize);
+                  checkStatus();
+                  selectSize().then(function(sizeValue) {
+                    console.log("size has been resolved to the value of " + sizeValue)
+                    if (sizeValue !== undefined) {
+                      $("#size").val(sizeValue);
+                      var checkCart = setInterval(function() {
+                        if (($("#size").val() === sizeValue) && ($("#cart-addf").length !== 0)) {
+                          console.log("The size is correctly selected.");
+                          addSize();
+                          clearInterval(checkCart);
+                        }
+                      }, 10);
+                    } else {
+                      console.log("Desired size does not exist");
+                      goNext();
+                    }
+                  });
+                } else if ($("#size").attr('type') == 'hidden') {
+                  clearInterval(checkSize);
+                  checkStatus();
+                  console.log("Dropdown doesnt exist");
+                  addOneSize();
+                }
+              }, 10);
+
+            } else {
+              window.location.href = theRightLink;
+            }
+          }
+        });*/
   }
 });
+
+
 
 
 /*
@@ -158,26 +220,24 @@ function findFirstProduct() {
 function findFirstProductLink() {
   return new Promise(function(resolve) {
     findFirstProduct().then(function(theRightProduct) {
-      console.log($("img[alt='" + theRightProduct + "']"));
-
+      var theFoundLink = undefined
       $('.inner-article a img').each(function() {
         if ($(this).attr("alt").indexOf(theRightProduct) >= 0) {
           var theRightLink = $(this).parent().attr("href");
           if (theRightLink.indexOf("black") >= 0) {
             var theRightLink = "http://www.supremenewyork.com" + theRightLink;
-            resolve(theRightLink);
+            chrome.storage.local.set({
+              theRightLink: theRightLink
+            }, function() {
+              console.log("YES THE ONE EXISTS")
+              resolve(theRightLink);
+            });
           }
-
         }
       });
-
     });
   });
 };
-
-
-
-
 
 function selectSize() {
   console.log("size selector start")
