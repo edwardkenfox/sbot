@@ -41,28 +41,6 @@ function findFirstProduct() {
   });
 }
 
-function findFirstProductLink() {
-  return new Promise(function (resolve) {
-    findFirstProduct().then(function (theRightProduct) {
-      var theFoundLink = undefined
-      $('.inner-article a img').each(function () {
-        if ($(this).attr("alt").indexOf(theRightProduct) >= 0) {
-          var theRightLink = $(this).parent().attr("href");
-          if (theRightLink.indexOf("black") >= 0) {
-            var theRightLink = "http://www.supremenewyork.com" + theRightLink;
-            chrome.storage.local.set({
-              theRightLink: theRightLink
-            }, function () {
-              console.log("YES THE ONE EXISTS")
-              resolve(theRightLink);
-            });
-          }
-        }
-      });
-    });
-  });
-};
-
 function testPromise() {
   var p1 = new Promise(function (resolve, reject) {
     findFirstProduct().then(function (theRightProduct) {
