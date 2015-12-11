@@ -21,7 +21,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         findFirstProductLink().then(function(theRightLink) {
           console.log("The first link on snipe is " + theRightLink);
           console.log("The link that we have to go to is " + theRightLink)
-          chrome.storage.local.set({theRightLink: theRightLink}, function() {
+          chrome.storage.local.set({
+            theRightLink: theRightLink
+          }, function() {
             window.location.href = theRightLink;
           });
         });
@@ -35,7 +37,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 checkStatus().then(function(botStatus) {
   if (botStatus == 1) {
-    chrome.storage.local.get('theRightLink', function(items) { // Get size preferences from storage
+    chrome.storage.local.get('theRightLink', function(result) { // Get size preferences from storage
+      var theRightLink = result.theRightLink;
+      console.log("The right link is read from the storage as " + theRightLink);
       if (theRightLink !== undefined) {
         console.log("The right link is read as " + theRightLink);
         if (window.location.href == theRightLink) {
@@ -153,19 +157,21 @@ function findFirstProduct() {
 
 function findFirstProductLink() {
   return new Promise(function(resolve) {
-      findFirstProduct().then(function(theRightProduct) {
-          console.log($("img[alt='" + theRightProduct + "']"));
+    findFirstProduct().then(function(theRightProduct) {
+      console.log($("img[alt='" + theRightProduct + "']"));
 
-          $('.inner-article a img').each(function() {
-              if ($(this).attr("alt").indexOf(theRightProduct) >= 0) {
-                var theRightLink = $(this).parent().attr("href");
-                var theRightLink = "http://www.supremenewyork.com" + theRightLink;
-                resolve(theRightLink);
-              }
-          });
+      $('.inner-article a img').each(function() {
+        if ($(this).attr("alt").indexOf(theRightProduct) >= 0) {
+          var theRightLink = $(this).parent().attr("href");
+          if (theRightLink.indexOf("black") >= 0) {
+            var theRightLink = "http://www.supremenewyork.com" + theRightLink;
+            resolve(theRightLink);
+          }
 
-
+        }
       });
+
+    });
   });
 };
 
