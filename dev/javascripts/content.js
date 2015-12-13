@@ -11,95 +11,112 @@ if (window.location.href == checkoutLink) {
 //On Snipe
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.greeting == "snipeitnow") {
-    chrome.storage.local.remove("theRightLink");
-    if (window.location.href == allLink) {
-      $(document).ready(function () {
-        testPromise();
-      });
-    } else {
-      window.location.href = allLink;
-    }
+    doSnipe();
   }
 });
 
 //On Loop
 checkStatus().then(function (botStatus) {
   if (botStatus == 1) {
-    $(document).ready(function () {
-      testPromise();
-    });
+    doSnipe();
   }
 });
+
+function doSnipe() {
+  // Differentiate the data received to URLs or Keyword
+  findFirstProduct().then(function (theRightProduct) {
+    if (theRightProduct.indexOf("http://www.supremenewyork.com/") >= 0) {
+      snipeLink(theRightProduct);
+      console.log("The data received is an url which is " + theRightProduct);
+    } else {
+      snipeKeyword(theRightProduct);
+      console.log("The data received is a keyword which is " + theRightProduct);
+    }
+  });
+}
 
 function findFirstProduct() {
   return new Promise(function (resolve) {
     getLink().then(function (allURL) {
       var theRightProduct = allURL.putURL1;
-      console.log("The data(s) received are as follows " + theRightProduct)
+      console.log("The first data received is " + theRightProduct)
       resolve(theRightProduct);
     });
   });
 }
 
-function testPromise() {
-  var p1 = new Promise(function (resolve, reject) {
-    findFirstProduct().then(function (theRightProduct) {
-      console.log("the product taken is " + theRightProduct)
-      var imgProd = $('.inner-article a img')
-      imgProd.each(function () {
-        if ($(this).attr("alt").indexOf(theRightProduct) >= 0) {
-          var theRightLink = $(this).parent().attr("href");
-          if (theRightLink.indexOf("black") >= 0) {
-            var theRightLink = "http://www.supremenewyork.com" + theRightLink;
-            resolve(theRightLink);
-          }
-        }
-      });
-      reject("I'm busy");
-    });
+function snipeLink(theData) {
+  console.log("URL Mode: The data received in snipeLink() is " + theData);
+  getLink().then(function (allURL) { // Get all registered URLs
+    var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
+    var posNow = allURL.nowUrl; // Get current URL position
+    var gotoPage = allURL[("putURL" + posNow).toString()]; // Get the URL to snipe at this time
+    if (window.location.href == gotoPage) {
+      console.log("URL Mode: Correct product page, executing addToCart();");
+      addToCart();
+    } else if (theData === undefined) { // If URL is not defined
+      console.log("URL Mode: URL is undefined! Go to next URL.");
+      // Check if there is a next URL to be sniped.
+      goNext();
+    } else {
+      console.log("URL Mode: Not on product page. Navigating to product page.");
+      window.location.href = theData;
+    }
   });
+}
+
+
+function snipeKeyword(theData) {
+  console.log("Keyword Mode: The data received in snipeKeyword() is " + theData);
+  chrome.storage.local.get('theRightLink', function (result) {
+    var theRightLink = result.theRightLink;
+    if (window.location.href == theRightLink) {
+      console.log("Keyword Mode: Correct product page, executing addToCart();");
+      addToCart();
+    } else if (window.location.href == allLink) {
+      console.log("Keyword Mode: On all page. executing keywordBot(theData);");
+      $(function () {
+        keywordBot(theData);
+      });
+    } else {
+      console.log("Keyword Mode: Not on all page. Navigating to all page.");
+      window.location.href = allLink;
+    }
+  });
+}
+
+function keywordBot(theData) {
+  // Acquire the correct URL based on keyword
+  var p1 = new Promise(function (resolve, reject) {
+    console.log("the product taken is " + theData)
+    var imgProd = $('.inner-article a img')
+    imgProd.each(function () {
+      if ($(this).attr("alt").indexOf(theData) >= 0) {
+        var theRightLink = $(this).parent().attr("href");
+        if (theRightLink.indexOf("black") >= 0) {
+          var theRightLink = "http://www.supremenewyork.com" + theRightLink;
+          resolve(theRightLink);
+        }
+      }
+    });
+    reject("I'm busy");
+  });
+  // Acquire the correct URL based on keyword
   p1.then(function (theValue) {
-    console.log("Success and the link is " + theValue);
+    console.log("Keyword Mode: (SUCCESS) A URL has been retrieved from the keyword and the URL is " + theValue);
     window.location.href = theValue;
     chrome.storage.local.set({
       theRightLink: theValue
     });
   }).catch(function () {
-    chrome.storage.local.get('theRightLink', function (result) { // Get size preferences from storage
+    chrome.storage.local.get('theRightLink', function (result) {
       var theRightLink = result.theRightLink;
       if (window.location.href != theRightLink) {
-        console.log("Failure and going to " + allLink);
+        console.log("Keyword Mode: (FAILURE) A URL has NOT been retrieved from the keyword, so navigating to " + allLink);
         window.location.href = allLink;
       } else {
-        console.log("On product page, executing add to cart");
-        var checkSize = setInterval(function () {
-          if ($('#size option').length) { // If product isn't already in cart and size dropdown exists
-            console.log("Dropdown exist");
-            clearInterval(checkSize);
-            checkStatus();
-            selectSize().then(function (sizeValue) {
-              console.log("size has been resolved to the value of " + sizeValue)
-              if (sizeValue !== undefined) {
-                $("#size").val(sizeValue);
-                var checkCart = setInterval(function () {
-                  if (($("#size").val() === sizeValue) && ($("#cart-addf").length !== 0)) {
-                    console.log("The size is correctly selected.");
-                    addSizeOne();
-                    clearInterval(checkCart);
-                  }
-                }, 10);
-              } else {
-                console.log("Desired size does not exist");
-                goNext();
-              }
-            });
-          } else if ($("#size").attr('type') == 'hidden') {
-            clearInterval(checkSize);
-            checkStatus();
-            console.log("Dropdown doesnt exist");
-            addOneSize();
-          }
-        }, 10);
+        console.log("Keyword Mode: Correct product page, executing addToCart();");
+        addToCart();
       }
     });
 
@@ -107,7 +124,7 @@ function testPromise() {
 }
 
 function selectSize() {
-  console.log("size selector start")
+  console.log("Executing selectSize()")
   return new Promise(function (resolve) {
     if (window.location.href.indexOf("jackets") > -1) {
       getSize("jackets").then(function (result) {
@@ -188,6 +205,37 @@ function failSafe() {
   }
 }
 
+function addToCart() {
+  var checkSize = setInterval(function () {
+    if ($('#size option').length) { // If product isn't already in cart and size dropdown exists
+      console.log("Dropdown exist");
+      clearInterval(checkSize);
+      selectSize().then(function (sizeValue) {
+        console.log("size has been resolved to the value of " + sizeValue)
+        if (sizeValue !== undefined) {
+          $("#size").val(sizeValue);
+          var checkCart = setInterval(function () {
+            if (($("#size").val() === sizeValue) && ($("#cart-addf").length !== 0)) {
+              console.log("The size is correctly selected.");
+              addSizeOne();
+              clearInterval(checkCart);
+              goNext();
+            }
+          }, 10);
+        } else {
+          console.log("Desired size does not exist");
+          goNext();
+        }
+      });
+    } else if ($("#size").attr('type') == 'hidden') {
+      clearInterval(checkSize);
+      checkStatus();
+      console.log("Dropdown doesnt exist, executing addOneSize();");
+      addOneSize();
+    }
+  }, 10);
+}
+
 function goNext() {
   getLink().then(function (allURL) { // Get all registered URLs
     // var allURL = items.allURL;
@@ -200,10 +248,12 @@ function goNext() {
       var nextPos = posNow + 1;
       var nextObj = ("putURL" + nextPos).toString();
       var nextPage = allURL[nextObj];
-      window.location.href = nextPage;
+
       allURL.nowUrl = nextPos;
       chrome.storage.local.set({
         allURL: allURL
+      }, function () {
+        window.location.href = nextPage;
       });
     } else {
       console.log("Current URL position is " + posNow + " of " + totalPos + ", so checking out")
