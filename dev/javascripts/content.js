@@ -51,7 +51,7 @@ function snipeLink(theData) {
     var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
     var posNow = allURL.nowUrl; // Get current URL position
     var gotoPage = allURL[("putURL" + posNow).toString()]; // Get the URL to snipe at this time
-    if (window.location == gotoPage) {
+    if (window.location.href == gotoPage) {
       console.log("URL Mode: Correct product page, executing addToCart();");
       addToCart();
     } else if (theData === undefined) { // If URL is not defined
@@ -70,12 +70,12 @@ function snipeKeyword(theData) {
   console.log("Keyword Mode: The data received in snipeKeyword() is " + theData);
   chrome.storage.local.get('theRightLink', function (result) {
     var theRightLink = result.theRightLink;
-    if (window.location == theRightLink) {
+    if (window.location.href == theRightLink) {
       console.log("Keyword Mode: Correct product page, executing addToCart();");
       addToCart();
     } else if (window.location.href == allLink) {
       console.log("Keyword Mode: On all page. executing keywordBot(theData);");
-      $(document).ready(function () {
+      $(function () {
         keywordBot(theData);
       });
     } else {
@@ -124,7 +124,7 @@ function keywordBot(theData) {
 }
 
 function selectSize() {
-  console.log("size selector start")
+  console.log("Executing selectSize()")
   return new Promise(function (resolve) {
     if (window.location.href.indexOf("jackets") > -1) {
       getSize("jackets").then(function (result) {
@@ -230,7 +230,7 @@ function addToCart() {
     } else if ($("#size").attr('type') == 'hidden') {
       clearInterval(checkSize);
       checkStatus();
-      console.log("Dropdown doesnt exist");
+      console.log("Dropdown doesnt exist, executing addOneSize();");
       addOneSize();
     }
   }, 10);
