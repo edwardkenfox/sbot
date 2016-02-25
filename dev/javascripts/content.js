@@ -89,10 +89,10 @@ function keywordBot(theData) {
   // Acquire the correct URL based on keyword
   var p1 = new Promise(function (resolve, reject) {
     console.log("the product taken is " + theData)
-    var imgProd = $('.inner-article a img')
+    var imgProd = $('.inner-article a')
     imgProd.each(function () {
-      if ($(this).attr("alt").indexOf(theData) >= 0) {
-        var theRightLink = $(this).parent().attr("href");
+      if ($(this).attr("href").indexOf(theData) >= 0) {
+        var theRightLink = $(this).attr("href");
         if (theRightLink.indexOf("black") >= 0) {
           var theRightLink = "http://www.supremenewyork.com" + theRightLink;
           resolve(theRightLink);
