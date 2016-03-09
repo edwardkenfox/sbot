@@ -103,6 +103,28 @@ $(document).ready(function() {
         }
     });
 
+
+    // Get manual status status and set the checkbox
+    chrome.storage.local.get('manualSwitch', function(items) {
+        console.log("this manualSwitch is " + items.manualSwitch)
+        if (items.manualSwitch == 1) {
+            $("#manual-mode").prop('checked', true);
+        } else {
+            $("#manual-mode").prop('checked', false);
+        }
+    });
+
+    // Checkout for me checkbox
+    $("#manual-mode").change(function() {
+        if (this.checked) {
+            // Set auto-checkout status to on
+            chrome.storage.local.set({"manualSwitch": 1});
+        } else {
+            // Set auto-checkout status to off
+            chrome.storage.local.set({"manualSwitch": 0});
+        }
+    });
+
     // Function to change enabled status and set button text
     function butText() {
         chrome.storage.local.get('statusStore', function(items) {
