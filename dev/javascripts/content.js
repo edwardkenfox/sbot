@@ -11,16 +11,32 @@ if (window.location.href == checkoutLink) {
 //On Snipe
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.greeting == "snipeitnow") {
-    doSnipe();
+    checkManual().then(function (status) {
+      if (status == 1) {
+        console.log("manual switch is on so dont style")
+        addToCart();
+      } else {
+        doSnipe();
+      }
+    });
   }
 });
 
 //On Loop
-checkStatus().then(function (botStatus) {
-  if (botStatus == 1) {
-    doSnipe();
+checkManual().then(function (status) {
+  if (status == 1) {
+    console.log("manual switch is on so dont style")
+    addToCart();
+  } else {
+    checkStatus().then(function (botStatus) {
+      if (botStatus == 1) {
+        doSnipe();
+      }
+    });
   }
 });
+
+
 
 function doSnipe() {
   // Differentiate the data received to URLs or Keyword
@@ -93,10 +109,12 @@ function keywordBot(theData) {
     imgProd.each(function () {
       if ($(this).attr("href").indexOf(theData) >= 0) {
         var theRightLink = $(this).attr("href");
+        console.log("the right link is " + theRightLink)
         if (theRightLink.indexOf("black") >= 0) {
           var theRightLink = "http://www.supremenewyork.com" + theRightLink;
           resolve(theRightLink);
         }
+        return false;
       }
     });
     reject("I'm busy");
@@ -112,8 +130,8 @@ function keywordBot(theData) {
     chrome.storage.local.get('theRightLink', function (result) {
       var theRightLink = result.theRightLink;
       if (window.location.href != theRightLink) {
-        console.log("Keyword Mode: (FAILURE) A URL has NOT been retrieved from the keyword, so navigating to " + allLink);
-        window.location.href = allLink;
+        console.log("Keyword Mode: (FAILURE) URL is not the right link, so navigating to " + theRightLink);
+        window.location.href = theRightLink;
       } else {
         console.log("Keyword Mode: Correct product page, executing addToCart();");
         addToCart();
@@ -183,6 +201,16 @@ function checkCheckout() {
     });
   });
 }
+
+function checkManual() {
+  return new Promise(function (resolve) {
+    chrome.storage.local.get('manualSwitch', function (items) {
+      resolve(items.manualSwitch);
+      console.log("The manual switch in chrome.storage is set to " + items.manualSwitch)
+    });
+  });
+}
+
 
 function failSafe() {
   if (($('time b:contains("11:00am")').length > 0) && (window.location != gotoPage)) {
