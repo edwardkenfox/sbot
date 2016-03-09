@@ -14,6 +14,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     checkManual().then(function (status) {
       if (status == 1) {
         console.log("manual switch is on so dont style")
+        addToCart();
       } else {
         doSnipe();
       }
@@ -25,6 +26,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 checkManual().then(function (status) {
   if (status == 1) {
     console.log("manual switch is on so dont style")
+    addToCart();
   } else {
     checkStatus().then(function (botStatus) {
       if (botStatus == 1) {
