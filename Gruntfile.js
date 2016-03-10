@@ -37,6 +37,11 @@ module.exports = function (grunt) {
       }
     },
     uglify: {
+      options: {
+        compress: {
+          drop_console: true
+        }
+      },
       dist: {
         files: [{
           expand: true,
