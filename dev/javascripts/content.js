@@ -7,36 +7,40 @@ var allLink = 'http://www.supremenewyork.com/shop/all';
 if (window.location.href == checkoutLink) {
   fillforms();
 }
+function manualControl() {
+  checkManual().then(function (status) {
+    if (status == 1) {
+      console.log("manual switch is on so dont style")
+      addToCart();
+    } else {
+      checkStatus().then(function (botStatus) {
+        if (botStatus == 1) {
+          doSnipe();
+        }
+      });
+    }
+  });
+};
+
+//On URL Change
+var oldLocation = window.location.href;
+setInterval(function() {
+  if(window.location.href != oldLocation) {
+    console.log("URL changed to "+ window.location.href);
+    oldLocation = window.location.href
+    manualControl();
+  }
+}, 500); // check every second
 
 //On Snipe
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.greeting == "snipeitnow") {
-    checkManual().then(function (status) {
-      if (status == 1) {
-        console.log("manual switch is on so dont style")
-        addToCart();
-      } else {
-        doSnipe();
-      }
-    });
+    manualControl();
   }
 });
 
 //On Loop
-checkManual().then(function (status) {
-  if (status == 1) {
-    console.log("manual switch is on so dont style")
-    addToCart();
-  } else {
-    checkStatus().then(function (botStatus) {
-      if (botStatus == 1) {
-        doSnipe();
-      }
-    });
-  }
-});
-
-
+manualControl();
 
 function doSnipe() {
   // Differentiate the data received to URLs or Keyword
@@ -110,6 +114,7 @@ function keywordBot(theData) {
       if ($(this).attr("href").indexOf(theData) >= 0) {
         var theRightLink = $(this).attr("href");
         console.log("the right link is " + theRightLink)
+        resolve(theRightLink);
         if (theRightLink.indexOf("black") >= 0) {
           var theRightLink = "http://www.supremenewyork.com" + theRightLink;
           resolve(theRightLink);
