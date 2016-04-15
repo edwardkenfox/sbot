@@ -134,7 +134,7 @@ $(document).ready(function() {
                 $('#clickMe').prop('disabled', true);
                 $("#stopMe").prop('disabled', false);
             } else {
-                $("#clickMe").html('<i class="fa fa-crosshairs"></i>');
+                $("#clickMe").html('<i class="material-icons">gps_fixed</i>');
                 $('#stopMe').prop('disabled', true);
                 $("#clickMe").prop('disabled', false);
             }
