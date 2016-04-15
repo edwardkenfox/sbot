@@ -1,27 +1,29 @@
-@import "base/variables";
-@import "modules/switch";
+@import 'base/variables';
+@import 'modules/switch';
+@import 'modules/buttons';
 
 a:link, a:visited, a:active, a:hover {
-  box-shadow: none;
+  text-decoration: none;
   color: $color-text;
   outline: none;
-  text-decoration: none;
+  box-shadow: none;
 }
 
 body {
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-  padding: 24px;
-  text-rendering: optimizeLegibility;
+  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
   width: 400px;
+  padding: $spacing-l;
+
+  text-rendering: optimizeLegibility;
 }
 
 form {
-  padding: 0;
   width: 100%;
+  padding: 0;
 }
 
 label {
-  margin-left: 10px;
+  margin-left: $spacing-m;
 }
 
 #top1, #top2 {
@@ -29,19 +31,19 @@ label {
 }
 
 .form-group {
-  border-top: 1px solid #eee;
   margin: 0;
+  border-top: $border-base;
 }
 
-input[type="text"], input[type="url"], input[type="email"] {
-  border: 0;
-  color: $color-text;
-  font-size: 14px;
-  height: 48px;
-  margin-right: 5px;
-  outline: none;
-  padding: 10px;
+input[type='text'], input[type='url'], input[type='email'] {
+  font-size: $size-font-m;
   width: 95%;
+  height: $size-input-height;
+  margin-right: $spacing-s;
+  padding: 10px;
+  color: $color-text;
+  border: 0;
+  outline: none;
 }
 
 input:focus {
@@ -50,23 +52,24 @@ input:focus {
 }
 
 select {
-     -moz-appearance: none;
-  /* Removes Default Firefox style*/
-  -webkit-appearance: none;
+  /*Removes default arrow from firefox*/
+  width: 100px;
+  margin: $spacing-m;
+  padding: $spacing-m;
+  text-indent: 0.01px;
+  /* Removes default arrow from firefox*/
+  text-overflow: '';
+  color: $color-text;
   /*Removes default chrome and safari style*/
-  border: 1px solid #eee !important;
+  border: $border-base !important;
   /*Removes border*/
   /*My custom style for fonts*/
   border-radius: 0;
   box-shadow: none;
-  color: $color-text;
-  margin: 10px;
-  padding: 10px;
-  text-indent: .01px;
-  /* Removes default arrow from firefox*/
-  text-overflow: "";
-  /*Removes default arrow from firefox*/
-  width: 100px;
+
+     -moz-appearance: none;
+  /* Removes Default Firefox style*/
+  -webkit-appearance: none;
   /*Width of select dropdown to give space for arrow image*/
 }
 
@@ -74,70 +77,36 @@ select {
   width: 204px;
 }
 
-button, button[type="submit"] {
-  background-color: $color-button-standard;
-  border: none;
-  color: #fff;
-  height: 48px;
-  width: 100%;
-}
-
-#add_field_button {
-  background-color: #bdbdbd;
-}
-
-#add_field_button:hover {
-  background-color: $color-button-standard;
-}
-
-#stopMe, #clearAdd {
-  background-color: $color-button-warn;
-  display: inline-block;
-  margin: 0;
-  vertical-align: middle;
-  width: 20%;
-}
-
-#stopMe:hover {
-  background-color: $color-button-standard;
-}
-
-#clickMe, #savenycAdd, #savetyoAdd, #saveSize {
-  background-color: $color-button-standard;
-  display: inline-block;
-  margin: 0;
-  vertical-align: middle;
-  width: 78%;
-}
-
-#clickMe {
-  font-size: 24px;
-}
-
-#clickMe:hover {
-  background-color: $color-button-warn;
-}
-
 ::-webkit-input-placeholder {
-  color: $color-button-disabled;
   font-weight: 100;
-}
-
-button[type="submit"]:disabled {
-  background-color: $color-button-disabled !important;
+  color: $color-button-disabled;
 }
 
 .title {
-  font-size: 22px;
+  font-size: $size-font-l;
   font-weight: 500;
-  padding: 18px;
+  padding: $size-font-l;
   text-align: center;
 }
 
-.goleft {
-  float: left;
-}
+.top-menu {
+  display: flex;
 
-.goright {
-  float: right;
+  justify-content: space-between;
+  align-items: center;
+  a {
+    display: flex;
+
+    align-items: center;
+  }
+  .goleft {
+    i.material-icons {
+      margin-right: $spacing-s;
+    }
+  }
+  .goright {
+    i.material-icons {
+      margin-left: $spacing-s;
+    }
+  }
 }

@@ -46,7 +46,9 @@ html
         .paper-toggle
           input#manual-mode.switch name="manual-mode" type="checkbox" /
           label for="manual-mode"  Manual Mode
-      button#clickMe type="submit"
-        i.material-icons gps_fixed
-      button#stopMe type="submit"  Stop
+      .btn-container
+        button#clickMe type="submit"
+          i.material-icons gps_fixed
+          | Snipe
+        button#stopMe type="submit" Stop
     script src="javascripts/popup.js" type="text/javascript"
