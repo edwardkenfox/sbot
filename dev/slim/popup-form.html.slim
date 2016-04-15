@@ -12,14 +12,12 @@ html
       | | \- Policy documentation[1] for details and explanation.
       | | \-
       | | \- [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-    /! Custom font
-    link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" /
     /! Latest compiled and minified CSS
     link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" /
     /! Optional theme
     link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet" /
-    /! Font Awesome
-    link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" /
+    /! Material Icons
+    link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" /
     /! jQuery
     script src="javascripts/jquery.min.js"
     /! Latest compiled and minified JavaScript
@@ -31,9 +29,10 @@ html
           | | width: 100%;
       | | }
   body
-    a href="popup-main.html"
-      i.fa.fa-chevron-circle-left
-      | Back
+    .top-menu
+      a.goright href="popup-main.html"
+        i.material-icons navigate_before
+        | Back
     .title Your checkout address
     div role="tabpanel"
       /! Nav tabs
@@ -149,9 +148,11 @@ html
                 option value="2025"  2025
             .form-group.hideme
               input#vval.string.required maxlength="4" name="credit_card[vval]" placeholder=("CVV Number") size="50" type="text" /
-            button#savetyoAdd type="submit"
-              i.fa.fa-save Save information
-            button#clearAdd type="reset"  Clear
+            .btn-container
+              button#savetyoAdd type="submit"
+                i.material-icons save
+                | Save information
+              button#clearAdd type="reset" Clear
         #nyc.tab-pane role="tabpanel"
           form
             .form-group style="border:none;"
@@ -274,7 +275,9 @@ html
                 option value="2025"  2025
             .form-group
               input#vval.string.required maxlength="4" name="credit_card[vval]" placeholder=("CVV Number") size="50" type="text" /
-            button#savenycAdd type="submit"
-              i.fa.fa-save Save information
-            button#clearAdd type="reset"  Clear
+            .btn-container
+              button#savenycAdd type="submit"
+                i.material-icons save
+                | Save information
+              button#clearAdd type="reset"  Clear
     script src="javascripts/pref.js" type="text/javascript"

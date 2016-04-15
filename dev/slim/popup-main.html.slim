@@ -10,14 +10,12 @@ html
     /!
       | Custom css
       | <link rel="stylesheet" href="http://www.sonsofsupreme.com/wp-content/themes/sonsofsupreme/style.css"
-    /! Custom font
-    link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" /
     /! Latest compiled and minified CSS
     link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" /
     /! Optional theme
     link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" rel="stylesheet" /
-    /! Font Awesome
-    link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" /
+    /! Material Icons
+    link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" /
     /! jQuery
     script src="javascripts/jquery.min.js"
     /! Latest compiled and minified JavaScript
@@ -26,14 +24,16 @@ html
   body
     .top-menu
       a.goleft href="popup-size.html"
-        i.fa.fa-arrows-alt Size Preferences
+        i.material-icons navigate_before
+        | Size Preferences
       a.goright href="popup-form.html"
         | Your Address
-        i.fa.fa-gear
+        i.material-icons settings
     .title Sons of Supreme Sniping Bot
     form.main-form
       button#add_field_button
-        i.fa.fa-plus-circle Add more fields
+        i.material-icons add_circle
+        | Add more fields
       .field-wrapper
         .form-group
           div
@@ -46,7 +46,9 @@ html
         .paper-toggle
           input#manual-mode.switch name="manual-mode" type="checkbox" /
           label for="manual-mode"  Manual Mode
-      button#clickMe type="submit"
-        i.fa.fa-crosshairs
-      button#stopMe type="submit"  Stop
+      .btn-container
+        button#clickMe type="submit"
+          i.material-icons gps_fixed
+          | Snipe
+        button#stopMe type="submit" Stop
     script src="javascripts/popup.js" type="text/javascript"
