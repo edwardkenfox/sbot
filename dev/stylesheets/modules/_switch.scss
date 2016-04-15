@@ -1,0 +1,63 @@
+/* Toggle switch styles */
+.paper-toggle {
+  clear: both;
+  margin: 20px 0;
+}
+
+.paper-toggle input:empty {
+  margin-left: -999px;
+}
+
+.paper-toggle input:empty ~ label {
+  cursor: pointer;
+  float: left;
+  line-height: 1.6em;
+  position: relative;
+          user-select: none;
+  width: 100%;
+
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+}
+
+.paper-toggle input:empty ~ label:before, .paper-toggle input:empty ~ label:after {
+  -webkit-transition: all 200ms ease-in;
+  content: " ";
+  display: block;
+  position: absolute;
+          transition: all 200ms ease-in;
+}
+
+.paper-toggle input:empty ~ label:before {
+  background-color: $color-button-standard;
+  height: 1px;
+  left: 135px;
+  top: 10px;
+  width: 30px;
+}
+
+input.switch:empty ~ label:after {
+  background-color: #fff;
+  border: solid 1px $color-button-standard !important;
+  border-radius: 50%;
+  border-radius: 50%;
+  bottom: .1em;
+  height: 8px;
+  height: 12px;
+  left: 156px;
+  margin-left: .1em;
+  top: 4.5px;
+  width: 1.4em;
+  width: 12px;
+}
+
+.paper-toggle input:checked ~ label:before {
+  background-color: #0f9d58;
+}
+
+.paper-toggle input:checked ~ label:after {
+  background-color: #0f9d58;
+  border: solid 1px #0f9d58 !important;
+  left: 131px;
+}
