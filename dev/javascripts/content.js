@@ -164,6 +164,11 @@ function selectSize() {
         sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
         resolve(sizeValue);
       });
+    } else if (window.location.href.indexOf("shoes") > -1) {
+      getSize("shoes").then(function (result) {
+        sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
+        resolve(sizeValue);
+      });
     } else if (window.location.href.indexOf("sweatshirts") > -1) {
       getSize("sweatshirts").then(function (result) {
         sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
