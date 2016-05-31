@@ -177,7 +177,14 @@ function selectSize() {
     } else if (window.location.href.indexOf("shorts") > -1) {
       getSize("shorts").then(function (result) {
         sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
-        resolve(sizeValue);
+        if (sizeValue == undefined) {
+          getSize("shortsalt").then(function (result) {
+            sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
+            resolve(sizeValue);
+          });
+        } else {
+          resolve(sizeValue);
+        }
       });
     } else if (window.location.href.indexOf("pants") > -1) {
       getSize("pants").then(function (result) {
