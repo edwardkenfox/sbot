@@ -23,9 +23,11 @@
             tops: 'Large',
             sweatshirts: 'Large',
             tshirts: 'Large',
-            shoes: '10.5',
             pants: 'Medium',
-            pantsalt: '32'
+            pantsalt: '32',
+            shorts: 'Medium',
+            shortsalt: 'Medium',
+            shoes: '10.5'
           };
           $('#jackets select').each(function(idx, element) {
             sizePref.jackets = this.value;
@@ -47,6 +49,12 @@
           });
           $('#tshirts select').each(function(idx, element) {
             sizePref.tshirts = this.value;
+          });
+          $('#shorts select').each(function(idx, element) {
+            sizePref.shorts = this.value;
+          });
+          $('#shortsalt select').each(function(idx, element) {
+            sizePref.shortsalt = this.value;
           });
           $('#shoes select').each(function(idx, element) {
             sizePref.shoes = this.value;
