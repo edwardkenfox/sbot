@@ -149,32 +149,34 @@ function keywordBot(theData) {
 function selectSize() {
   console.log("Executing selectSize()")
   return new Promise(function (resolve) {
-    if (window.location.href.indexOf("jackets") > -1) {
+    var href = window.location.href;
+
+    if (href.indexOf("jackets") > -1) {
       getSize("jackets").then(function (result) {
         sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
         resolve(sizeValue);
       });
-    } else if (window.location.href.indexOf("shirts") > -1) {
+    } else if (href.indexOf("shirts") > -1) {
       getSize("shirts").then(function (result) {
         sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
         resolve(sizeValue);
       });
-    } else if (window.location.href.indexOf("tops") > -1) {
+    } else if (href.indexOf("tops") > -1) {
       getSize("tops").then(function (result) {
         sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
         resolve(sizeValue);
       });
-    } else if (window.location.href.indexOf("shoes") > -1) {
+    } else if (href.indexOf("shoes") > -1) {
       getSize("shoes").then(function (result) {
         sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
         resolve(sizeValue);
       });
-    } else if (window.location.href.indexOf("sweatshirts") > -1) {
+    } else if (href.indexOf("sweatshirts") > -1) {
       getSize("sweatshirts").then(function (result) {
         sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
         resolve(sizeValue);
       });
-    } else if (window.location.href.indexOf("shorts") > -1) {
+    } else if (href.indexOf("shorts") > -1) {
       getSize("shorts").then(function (result) {
         sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
         if (sizeValue == undefined) {
@@ -186,7 +188,7 @@ function selectSize() {
           resolve(sizeValue);
         }
       });
-    } else if (window.location.href.indexOf("pants") > -1) {
+    } else if (href.indexOf("pants") > -1) {
       getSize("pants").then(function (result) {
         sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
         if (sizeValue == undefined) {
@@ -198,7 +200,7 @@ function selectSize() {
           resolve(sizeValue);
         }
       });
-    } else if (window.location.href.indexOf("t-shirts") > -1) {
+    } else if (href.indexOf("t-shirts") > -1) {
       getSize("tshirts").then(function (result) {
         sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
         resolve(sizeValue);
@@ -257,7 +259,7 @@ function failSafe() {
 
 function addToCart() {
   var checkSize = setInterval(function () {
-    if ($('#size option').length) { // If product isn't already in cart and size dropdown exists
+    if (document.querySelector("#size option")) { // If product isn't already in cart and size dropdown exists
       console.log("Dropdown exist");
       clearInterval(checkSize);
       selectSize().then(function (sizeValue) {
@@ -265,7 +267,8 @@ function addToCart() {
         if (sizeValue !== undefined) {
           $("#size").val(sizeValue);
           var checkCart = setInterval(function () {
-            if (($("#size").val() === sizeValue) && ($("#cart-addf").length !== 0)) {
+            var doc = window.document;
+            if ((doc.getElementById("size").value === sizeValue) && (doc.getElementById("cart-addf"))) {
               console.log("The size is correctly selected.");
               addSizeOne();
               clearInterval(checkCart);
@@ -318,7 +321,7 @@ function addSize() {
     var posNow = allURL.nowUrl;
     var gotoPage = allURL[("putURL" + posNow).toString()];
     $.ajax({
-      url: $("#cart-addf").attr('action'),
+      url: document.getElementById("cart-addf").getAttribute("action"),
       type: 'POST',
       data: "size=" + sizeValue,
       success: function () {
@@ -334,7 +337,7 @@ function addSizeOne() {
     var posNow = allURL.nowUrl;
     var gotoPage = allURL[("putURL" + posNow).toString()];
     $.ajax({
-      url: $("#cart-addf").attr('action'),
+      url: document.getElementById("cart-addf").getAttribute("action"),
       type: 'POST',
       data: "size=" + sizeValue,
       success: function () {
@@ -346,7 +349,9 @@ function addSizeOne() {
 
 // Function to add size to cart
 function addOneSize() {
-  onesize = $("#size").val();
+  var doc = window.document;
+  onesize = doc.getElementById("size").value;
+
   getLink().then(function (allURL) { // Get all registered URLs
     // var allURL = items.allURL;
     var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
@@ -356,7 +361,7 @@ function addOneSize() {
     var dataObj = ("putURL" + posNow).toString();
     var gotoPage = allURL[dataObj];
     $.ajax({
-      url: $("#cart-addf").attr('action'),
+      url: doc.getElementById("cart-addf").getAttribute("action"),
       type: 'POST',
       data: "size=" + onesize,
       success: function () {
@@ -412,7 +417,7 @@ function turnOff() {
 function nostock() {
   if (window.location.href == cartLink) {
     // Check if any unavailable item exists
-    if ($(".out_of_stock").length !== 0) {
+    if (document.getElementsByClassName("out_of_stock")) {
       $(".out_of_stock .cart-remove .intform .remove").click();
     } else {
       checkout();
@@ -422,6 +427,8 @@ function nostock() {
 
 // Function to fill forms if on checkout page
 function fillforms() {
+  var doc = window.document;
+
   if (window.location.href == checkoutLink) {
     chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       if (request.greeting == "clickcheck") {
@@ -430,9 +437,9 @@ function fillforms() {
       }
     });
     var checkForm = setInterval(function () {
-      if ($("#number_v").length !== 0) {
+      if (doc.getElementById("number_v")) {
         clearInterval(checkForm);
-        var nowZone = $("#time-zone-name").text();
+        var nowZone = doc.getElementById("time-zone-name").innerHTML;
         if (nowZone == "TYO") {
           chrome.storage.local.get('tyoPref', function (items) {
             var tyoPref = items.tyoPref;
@@ -440,7 +447,7 @@ function fillforms() {
               $("#" + key).val(tyoPref[key]);
             }
             if (tyoPref.credit_card_type == "cod") {
-              $("#card_details").css("display", "none");
+              doc.getElementById("card_details").style.display = "none";
             }
           });
         } else if (nowZone == "NYC") {
@@ -455,8 +462,8 @@ function fillforms() {
           console.log("Don't know which checkout page this is. Time zone text doesn't exist.");
         }
         //Check terms checkbox
-        $("#order_terms").prop("checked", true);
-        $(".icheckbox_minimal").addClass("checked");
+        doc.getElementById("order_terms").checked = true;
+        doc.querySelector(".icheckbox_minimal").className += " checked";
       }
     }, 10);
   }
