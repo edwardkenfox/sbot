@@ -4,17 +4,17 @@ var cartLink = 'https://www.supremenewyork.com/cart';
 var allLink = 'http://www.supremenewyork.com/shop/all';
 
 //Fill Forms
-if (window.location.href == checkoutLink) {
+if (window.location.href === checkoutLink) {
   fillforms();
 }
 function manualControl() {
   checkManual().then(function (status) {
-    if (status == 1) {
+    if (status === 1) {
       console.log("manual switch is on so dont style")
       addToCart();
     } else {
       checkStatus().then(function (botStatus) {
-        if (botStatus == 1) {
+        if (botStatus === 1) {
           doSnipe();
         }
       });
@@ -25,7 +25,7 @@ function manualControl() {
 //On URL Change
 var oldLocation = window.location.href;
 setInterval(function() {
-  if(window.location.href != oldLocation) {
+  if(window.location.href !== oldLocation) {
     console.log("URL changed to "+ window.location.href);
     oldLocation = window.location.href
     manualControl();
@@ -34,7 +34,7 @@ setInterval(function() {
 
 //On Snipe
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.greeting == "snipeitnow") {
+  if (request.greeting === "snipeitnow") {
     manualControl();
   }
 });
@@ -71,7 +71,7 @@ function snipeLink(theData) {
     var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
     var posNow = allURL.nowUrl; // Get current URL position
     var gotoPage = allURL[("putURL" + posNow).toString()]; // Get the URL to snipe at this time
-    if (window.location.href == gotoPage) {
+    if (window.location.href === gotoPage) {
       console.log("URL Mode: Correct product page, executing addToCart();");
       addToCart();
     } else if (theData === undefined) { // If URL is not defined
@@ -90,10 +90,10 @@ function snipeKeyword(theData) {
   console.log("Keyword Mode: The data received in snipeKeyword() is " + theData);
   chrome.storage.local.get('theRightLink', function (result) {
     var theRightLink = result.theRightLink;
-    if (window.location.href == theRightLink) {
+    if (window.location.href === theRightLink) {
       console.log("Keyword Mode: Correct product page, executing addToCart();");
       addToCart();
-    } else if (window.location.href == allLink) {
+    } else if (window.location.href === allLink) {
       console.log("Keyword Mode: On all page. executing keywordBot(theData);");
       $(function () {
         keywordBot(theData);
@@ -134,7 +134,7 @@ function keywordBot(theData) {
   }).catch(function () {
     chrome.storage.local.get('theRightLink', function (result) {
       var theRightLink = result.theRightLink;
-      if (window.location.href != theRightLink) {
+      if (window.location.href !== theRightLink) {
         console.log("Keyword Mode: (FAILURE) URL is not the right link, so navigating to " + theRightLink);
         window.location.href = theRightLink;
       } else {
@@ -179,7 +179,7 @@ function selectSize() {
     } else if (href.indexOf("shorts") > -1) {
       getSize("shorts").then(function (result) {
         sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
-        if (sizeValue == undefined) {
+        if (sizeValue === undefined) {
           getSize("shortsalt").then(function (result) {
             sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
             resolve(sizeValue);
@@ -191,7 +191,7 @@ function selectSize() {
     } else if (href.indexOf("pants") > -1) {
       getSize("pants").then(function (result) {
         sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
-        if (sizeValue == undefined) {
+        if (sizeValue === undefined) {
           getSize("pantsalt").then(function (result) {
             sizeValue = $("#size").find("option").filter(':contains(' + result + ')').val();
             resolve(sizeValue);
@@ -237,11 +237,11 @@ function checkManual() {
 
 
 function failSafe() {
-  if (($('time b:contains("11:00am")').length > 0) && (window.location != gotoPage)) {
+  if (($('time b:contains("11:00am")').length > 0) && (window.location !== gotoPage)) {
     console.log("URL doesn't exist, so skip item.");
     // Check if there is a next URL to be sniped.
     goNext();
-  } else if (window.location.href != checkoutLink) {
+  } else if (window.location.href !== checkoutLink) {
     window.location.href = gotoPage;
   } else {
     //open new tab and go to page
@@ -280,7 +280,7 @@ function addToCart() {
           goNext();
         }
       });
-    } else if ($("#size").attr('type') == 'hidden') {
+    } else if ($("#size").attr('type') === 'hidden') {
       clearInterval(checkSize);
       checkStatus();
       console.log("Dropdown doesnt exist, executing addOneSize();");
@@ -393,7 +393,7 @@ function getLink() {
 function checkout() {
   turnOff();
   checkCheckout().then(function (status) {
-    if (status == 1) {
+    if (status === 1) {
       // Get auto checkout status and process payment if on
       chrome.runtime.sendMessage({
         greeting: "checkitout"
@@ -415,7 +415,7 @@ function turnOff() {
 
 // Function to remove items in cart that are sold out and go to checkout page
 function nostock() {
-  if (window.location.href == cartLink) {
+  if (window.location.href === cartLink) {
     // Check if any unavailable item exists
     if (document.getElementsByClassName("out_of_stock")) {
       $(".out_of_stock .cart-remove .intform .remove").click();
@@ -429,9 +429,9 @@ function nostock() {
 function fillforms() {
   var doc = window.document;
 
-  if (window.location.href == checkoutLink) {
+  if (window.location.href === checkoutLink) {
     chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-      if (request.greeting == "clickcheck") {
+      if (request.greeting === "clickcheck") {
         $("input[name = 'commit']").click();
         console.log("Got a message to check out.");
       }
@@ -440,17 +440,17 @@ function fillforms() {
       if (doc.getElementById("number_v")) {
         clearInterval(checkForm);
         var nowZone = doc.getElementById("time-zone-name").innerHTML;
-        if (nowZone == "TYO") {
+        if (nowZone === "TYO") {
           chrome.storage.local.get('tyoPref', function (items) {
             var tyoPref = items.tyoPref;
             for (var key in tyoPref) {
               $("#" + key).val(tyoPref[key]);
             }
-            if (tyoPref.credit_card_type == "cod") {
+            if (tyoPref.credit_card_type === "cod") {
               doc.getElementById("card_details").style.display = "none";
             }
           });
-        } else if (nowZone == "NYC") {
+        } else if (nowZone === "NYC") {
           console.log("This is the NYC checkout page.");
           chrome.storage.local.get('nycPref', function (items) {
             var nycPref = items.nycPref;
