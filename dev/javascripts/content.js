@@ -2,10 +2,10 @@
 var checkoutLink = 'https://www.supremenewyork.com/checkout';
 var cartLink = 'https://www.supremenewyork.com/cart';
 var allLink = 'http://www.supremenewyork.com/shop/all';
+var newLink = 'http://www.supremenewyork.com/shop/new';
 
 //On Loop
 manualControl();
-
 
 $(function() {
   var imgProdNow = $('.inner-article a:nth-of-type(1)').attr("href");
@@ -59,7 +59,11 @@ function autoRefresh(inputVal) {
   chrome.storage.local.get('currentFirstItem', function (result) {
     console.log(result.currentFirstItem);
     if (result.currentFirstItem === inputVal) {
-      location.reload();
+      if (window.location.href === newLink) {
+        location.reload();
+      } else {
+        window.location.href = newLink;
+      }
     } else {
       turnOff();
     }
