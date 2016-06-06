@@ -2,11 +2,26 @@
 var checkoutLink = 'https://www.supremenewyork.com/checkout';
 var cartLink = 'https://www.supremenewyork.com/cart';
 var allLink = 'http://www.supremenewyork.com/shop/all';
+var newLink = 'http://www.supremenewyork.com/shop/new';
+
+//On Loop
+manualControl();
+
+$(function() {
+  var imgProdNow = $('.inner-article a:nth-of-type(1)').attr("href");
+  console.log("the value upon reload is " + imgProdNow)
+  checkStatus().then(function (status) {
+    if (status === 1) {
+      autoRefresh(imgProdNow);
+    }
+  });
+});
 
 //Fill Forms
 if (window.location.href === checkoutLink) {
   fillforms();
 }
+
 function manualControl() {
   checkManual().then(function (status) {
     if (status === 1) {
@@ -29,12 +44,31 @@ setInterval(function() {
 //On Snipe
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.greeting === "snipeitnow") {
-    manualControl();
+    // Store first image url and detect change
+    var imgProd = $('.inner-article a:nth-of-type(1)').attr("href");
+    chrome.storage.local.set({
+      currentFirstItem: imgProd
+    });
+    autoRefresh(imgProd);
   }
 });
 
-//On Loop
-manualControl();
+function autoRefresh(inputVal) {
+  // Check the first item and store in storage
+  console.log("the current page first link is " + inputVal);
+  chrome.storage.local.get('currentFirstItem', function (result) {
+    console.log(result.currentFirstItem);
+    if (result.currentFirstItem === inputVal) {
+      if (window.location.href === newLink) {
+        location.reload();
+      } else {
+        window.location.href = newLink;
+      }
+    } else {
+      turnOff();
+    }
+  });
+}
 
 function selectSize() {
   console.log("Executing selectSize()")
