@@ -115,6 +115,10 @@ $(document).ready(function() {
       }
   });
 
+  chrome.storage.local.get('itemPos', function(items) {
+    correctItemPos = items.itemPos;
+    $("input#auto-mode").val(correctItemPos);
+  });
 
 }); // End of document ready
 
