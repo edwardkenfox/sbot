@@ -16,8 +16,14 @@ $(document).ready(function() {
             greeting: "snipeitnow"
         });
     });
-    // Save URL in fields
-    saveResults();
+    // Save position in field manual field
+    chrome.storage.local.get('manualSwitch', function(items) {
+      console.log("this manualSwitch is " + items.manualSwitch)
+      if (items.manualSwitch == 0) {
+        var itemPosArray = $("input#auto-mode").val();
+        chrome.storage.local.set({"itemPos": itemPosArray});
+      }
+    });
   });
 
   // Stop script button
@@ -57,8 +63,10 @@ $(document).ready(function() {
       console.log("this manualSwitch is " + items.manualSwitch)
       if (items.manualSwitch == 1) {
           $("#manual-mode").prop('checked', true);
+          $("#auto-mode").css('display', 'none');
       } else {
           $("#manual-mode").prop('checked', false);
+          $("#auto-mode").css('display', 'block');
       }
   });
 
@@ -67,9 +75,11 @@ $(document).ready(function() {
       if (this.checked) {
           // Set auto-checkout status to on
           chrome.storage.local.set({"manualSwitch": 1});
+          $("#auto-mode").css('display', 'none');
       } else {
           // Set auto-checkout status to off
           chrome.storage.local.set({"manualSwitch": 0});
+          $("#auto-mode").css('display', 'block');
       }
   });
 
