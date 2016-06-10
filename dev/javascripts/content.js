@@ -5,7 +5,7 @@ var allLink = 'http://www.supremenewyork.com/shop/all';
 var newLink = 'http://www.supremenewyork.com/shop/new';
 
 //On Loop
-manualControl();
+addToCart();
 
 $(function() {
   var imgProdNow = $('.inner-article a:nth-of-type(1)').attr("href");
@@ -22,22 +22,13 @@ if (window.location.href === checkoutLink) {
   fillforms();
 }
 
-function manualControl() {
-  checkManual().then(function (status) {
-    if (status === 1) {
-      console.log("manual switch is on so dont style")
-      addToCart();
-    }
-  });
-};
-
 //On URL Change
 var oldLocation = window.location.href;
 setInterval(function() {
   if(window.location.href !== oldLocation) {
     console.log("URL changed to "+ window.location.href);
     oldLocation = window.location.href
-    manualControl();
+    addToCart();
   }
 }, 500); // check every second
 
@@ -66,6 +57,15 @@ function autoRefresh(inputVal) {
       }
     } else {
       turnOff();
+      if (window.location.href === newLink) {
+        chrome.storage.local.get('itemPos', function(items) {
+          correctItemPos = items.itemPos;
+          console.log("The correct item position is " + correctItemPos);
+          correctItemPosLink = "http://www.supremenewyork.com" + $(".turbolink_scroller article:nth-of-type(" + correctItemPos + ") .inner-article a:nth-of-type(1)").attr("href");
+          console.log("The correct item link is " + correctItemPosLink);
+          window.open(correctItemPosLink, '_blank');
+        });
+      }
     }
   });
 }
