@@ -23,7 +23,10 @@ if (window.location.href === checkoutLink) {
 if (window.location.href === newLink) {
   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.greeting === "startcheckout") {
-      window.open(checkoutLink, '_blank')
+      var openCheckout = setInterval(function () {
+        window.open(checkoutLink, '_blank')
+        clearInterval(openCheckout);
+      }, 300 );
       console.log("got messag to open checkout page")
     }
   });
@@ -326,12 +329,6 @@ function fillforms() {
   var doc = window.document;
 
   if (window.location.href === checkoutLink) {
-    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-      if (request.greeting === "clickcheck") {
-        $("input[name = 'commit']").click();
-        console.log("Got a message to check out.");
-      }
-    });
     var checkForm = setInterval(function () {
       if (doc.getElementById("number_v")) {
         clearInterval(checkForm);
@@ -359,7 +356,13 @@ function fillforms() {
         }
         //Check terms checkbox
         doc.getElementById("order_terms").checked = true;
-        doc.querySelector(".icheckbox_minimal").className += " checked";
+        console.log("filledform");
+        chrome.storage.local.get('checkoutSwitch', function(items) {
+          console.log("this checkoutswich is " + items.checkoutSwitch)
+          if (items.checkoutSwitch == 1) {
+            $("input[name = 'commit']").click();
+          }
+        });
       }
     }, 10);
   }
