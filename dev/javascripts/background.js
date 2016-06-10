@@ -18,6 +18,32 @@
         }
       });
     }
+    if (request.greeting === 'increasecount') {
+      chrome.storage.local.get('itemArrayCurrent', function(items) {
+        var newItemCount;
+        newItemCount = items.itemArrayCurrent + 1;
+        chrome.storage.local.set({
+          'itemArrayCurrent': newItemCount
+        });
+        console.log('new item count is ' + newItemCount);
+        return chrome.storage.local.get('itemArrayTotal', function(items) {
+          console.log('total item count is ' + items.itemArrayTotal);
+          if (newItemCount === items.itemArrayTotal) {
+            return chrome.tabs.query({}, function(tabs) {
+              var i, message;
+              message = {
+                greeting: 'startcheckout'
+              };
+              i = 0;
+              while (i < tabs.length) {
+                chrome.tabs.sendMessage(tabs[i].id, message);
+                ++i;
+              }
+            });
+          }
+        });
+      });
+    }
   });
 
 }).call(this);

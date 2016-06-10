@@ -10,4 +10,19 @@ chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
         chrome.tabs.sendMessage tabs[i].id, message
         ++i
       return
+  if request.greeting == 'increasecount'
+    chrome.storage.local.get 'itemArrayCurrent', (items) ->
+      newItemCount = items.itemArrayCurrent + 1
+      chrome.storage.local.set 'itemArrayCurrent': newItemCount
+      console.log 'new item count is ' + newItemCount
+      chrome.storage.local.get 'itemArrayTotal', (items) ->
+        console.log 'total item count is ' + items.itemArrayTotal
+        if newItemCount == items.itemArrayTotal
+          chrome.tabs.query {}, (tabs) ->
+            message = greeting: 'startcheckout'
+            i = 0
+            while i < tabs.length
+              chrome.tabs.sendMessage tabs[i].id, message
+              ++i
+            return
   return

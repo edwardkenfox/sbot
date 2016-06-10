@@ -22,6 +22,10 @@ $(document).ready(function() {
       if (items.manualSwitch == 0) {
         var itemPosArray = $("input#auto-mode").val();
         chrome.storage.local.set({"itemPos": itemPosArray});
+        var itemArrayTotal = itemPosArray.split(",").length;
+        chrome.storage.local.set({"itemArrayTotal": itemArrayTotal});
+        // Reset the item count
+        chrome.storage.local.set({"itemArrayCurrent": 0});
       }
     });
   });
