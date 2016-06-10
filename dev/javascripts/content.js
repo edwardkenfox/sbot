@@ -60,10 +60,13 @@ function autoRefresh(inputVal) {
       if (window.location.href === newLink) {
         chrome.storage.local.get('itemPos', function(items) {
           correctItemPos = items.itemPos;
-          console.log("The correct item position is " + correctItemPos);
-          correctItemPosLink = "http://www.supremenewyork.com" + $(".turbolink_scroller article:nth-of-type(" + correctItemPos + ") .inner-article a:nth-of-type(1)").attr("href");
-          console.log("The correct item link is " + correctItemPosLink);
-          window.open(correctItemPosLink, '_blank');
+          var allItemArray = correctItemPos.split(",");
+          $.each(allItemArray,function(i){
+            console.log("The correct item position is " + allItemArray[i]);
+            correctItemPosLink = "http://www.supremenewyork.com" + $(".turbolink_scroller article:nth-of-type(" + allItemArray[i] + ") .inner-article a:nth-of-type(1)").attr("href");
+            console.log("The correct item link is " + correctItemPosLink);
+            window.open(correctItemPosLink, '_blank')
+          });
         });
       }
     }
