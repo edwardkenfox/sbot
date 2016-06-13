@@ -28,7 +28,7 @@
         console.log('new item count is ' + newItemCount);
         return chrome.storage.local.get('itemArrayTotal', function(items) {
           console.log('total item count is ' + items.itemArrayTotal);
-          if (newItemCount === items.itemArrayTotal) {
+          if (newItemCount >= items.itemArrayTotal) {
             return chrome.tabs.query({}, function(tabs) {
               var i, message;
               message = {

@@ -33,7 +33,7 @@ if (window.location.href === newLink) {
 }
 
 $(function() {
-  if ((window.location.href !== newLink) && (window.location.href !== checkoutLink) && (window.location.href !== cartLink) && (window.location.href !== allLink)) {
+  if ((window.location.href.indexOf("supremenewyork") != -1) && (window.location.href !== newLink) &&  (window.location.href !== checkoutLink) && (window.location.href !== cartLink) && (window.location.href !== allLink) && (window.location.href !== 'http://www.supremenewyork.com/shop')) {
     addToCart();
   }
 });
@@ -73,18 +73,20 @@ function autoRefresh(inputVal) {
       }
     } else {
       turnOff();
-      if (window.location.href === newLink) {
-        chrome.storage.local.get('itemPos', function(items) {
-          correctItemPos = items.itemPos;
-          var allItemArray = correctItemPos.split(",");
-          $.each(allItemArray,function(i){
-            console.log("The correct item position is " + allItemArray[i]);
-            correctItemPosLink = "http://www.supremenewyork.com" + $(".turbolink_scroller article:nth-of-type(" + allItemArray[i] + ") .inner-article a:nth-of-type(1)").attr("href");
-            console.log("The correct item link is " + correctItemPosLink);
-            window.open(correctItemPosLink, '_blank')
+      chrome.storage.local.get('manualSwitch', function(items) {
+        if (items.manualSwitch == 0 && window.location.href === newLink) {
+          chrome.storage.local.get('itemPos', function(items) {
+            correctItemPos = items.itemPos;
+            var allItemArray = correctItemPos.split(",");
+            $.each(allItemArray,function(i){
+              console.log("The correct item position is " + allItemArray[i]);
+              correctItemPosLink = "http://www.supremenewyork.com" + $(".turbolink_scroller article:nth-of-type(" + allItemArray[i] + ") .inner-article a:nth-of-type(1)").attr("href");
+              console.log("The correct item link is " + correctItemPosLink);
+              window.open(correctItemPosLink, '_blank')
+            });
           });
-        });
-      }
+        }
+      });
     }
   });
 }
@@ -195,6 +197,7 @@ function addToCart() {
               chrome.runtime.sendMessage({
                 greeting: "increasecount"
               });
+              console.log("Increase item count and successfully added.");
               clearInterval(checkCart);
             }
           }, 10);
@@ -205,14 +208,15 @@ function addToCart() {
       chrome.runtime.sendMessage({
         greeting: "increasecount"
       });
+      console.log("Increase item count and one size item successfully added.");
       checkStatus();
-      console.log("Dropdown doesnt exist, executing addOneSize();");
       addOneSize();
     } else {
       clearInterval(checkSize);
       chrome.runtime.sendMessage({
         greeting: "increasecount"
       });
+      console.log("Increase item count and item not added.");
     }
   }, 10);
 }
