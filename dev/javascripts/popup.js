@@ -26,6 +26,9 @@ $(document).ready(function() {
                 chrome.storage.local.set({ "itemArrayTotal": itemArrayTotal });
                 // Reset the item count
                 chrome.storage.local.set({ "itemArrayCurrent": 0 });
+            } else {
+              var itemArrayTotal = $("input#manual-mode-checkout").val();
+              chrome.storage.local.set({ "itemArrayTotal": itemArrayTotal });
             }
         });
     });
@@ -149,6 +152,11 @@ $(document).ready(function() {
     chrome.storage.local.get('itemPos', function(items) {
         correctItemPos = items.itemPos;
         $("input#auto-mode").val(correctItemPos);
+    });
+
+    chrome.storage.local.get('itemArrayTotal', function(items) {
+        itemArrayTotal = items.itemArrayTotal;
+        $("input#manual-mode-checkout").val(itemArrayTotal);
     });
 
 }); // End of document ready
