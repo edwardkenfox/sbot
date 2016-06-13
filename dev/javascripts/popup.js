@@ -78,7 +78,6 @@ $(document).ready(function() {
       }
   });
 
-
   // Get manual status status and set the checkbox
   chrome.storage.local.get('manualSwitch', function(items) {
       console.log("this manualSwitch is " + items.manualSwitch)
@@ -140,7 +139,6 @@ $(document).ready(function() {
       butText();
   });
 
-
   // Fill input fields with saved URLs
   chrome.storage.local.get('allURL', function(items) {
       var allURL = items.allURL;
@@ -159,7 +157,6 @@ $(document).ready(function() {
       itemArrayTotal = items.itemArrayTotal;
       $("input#manual-mode-checkout").val(itemArrayTotal);
   });
-
 }); // End of document ready
 
 $("input[type='url']").on("click", function() {

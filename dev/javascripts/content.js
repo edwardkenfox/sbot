@@ -27,7 +27,7 @@ if (window.location.href === newLink) {
         window.open(checkoutLink, '_blank')
         clearInterval(openCheckout);
       }, 300 );
-      console.log("got messag to open checkout page")
+      console.log("Got message to open checkout page")
     }
   });
 }
@@ -51,12 +51,16 @@ setInterval(function() {
 //On Snipe
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.greeting === "snipeitnow") {
-    // Store first image url and detect change
-    var imgProd = $('.inner-article a:nth-of-type(1)').attr("href");
-    chrome.storage.local.set({
-      currentFirstItem: imgProd
-    });
-    autoRefresh(imgProd);
+    if (window.location.href !== newLink) {
+      window.location.href = newLink;
+    } else {
+      // Store first image url and detect change
+      var imgProd = $('.inner-article a:nth-of-type(1)').attr("href");
+      chrome.storage.local.set({
+        currentFirstItem: imgProd
+      });
+      autoRefresh(imgProd);
+    }
   }
 });
 
