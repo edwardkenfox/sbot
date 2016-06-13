@@ -33,14 +33,17 @@ html
     form.main-form
       .form-group
         .paper-toggle
-          input#auto-checkout.switch name="auto-checkout" type="checkbox" /
-          label for="auto-checkout"  Check out for me
-      .form-group
-        .paper-toggle
           input#manual-mode.switch name="manual-mode" type="checkbox" /
           label for="manual-mode"  Manual Mode
       .form-group#auto-mode
         input#auto-mode name="auto-mode" placeholder=("Enter item position(s) e.g. 2,6,15") size="30" type="text" /
+      .form-group
+        .paper-toggle
+          input#auto-checkout.switch name="auto-checkout" type="checkbox" /
+          label for="auto-checkout"  Check out for me
+      .form-group#manual-mode-checkout
+        input#manual-mode-checkout name="manual-mode-checkout" placeholder=("Checkout after how many items? eg. 12") type="number" /
+
       .btn-container
         button#clickMe type="submit"
           i.material-icons gps_fixed

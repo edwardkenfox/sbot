@@ -35,7 +35,7 @@ label {
   border-top: $border-base;
 }
 
-input[type='text'], input[type='url'], input[type='email'] {
+input[type='text'], input[type='url'], input[type='email'], input[type='number'] {
   font-size: $size-font-m;
   width: 95%;
   height: $size-input-height;
