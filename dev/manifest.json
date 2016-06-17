@@ -36,6 +36,16 @@
     },
     {
       "matches": [
+        "http://www.supremenewyork.com/shop/*/*/*"
+      ],
+      "js": [
+        "javascripts/jquery.min.js",
+        "javascripts/addtocart.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
         "http://www.supremenewyork.com/shop/all",
         "http://www.supremenewyork.com/shop/new"
       ],
