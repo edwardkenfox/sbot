@@ -7,18 +7,30 @@ var newLink = 'http://www.supremenewyork.com/shop/new';
 //On Loop
 $(function() {
   if (window.location.href === newLink) {
-    var imgProdNow = $('.inner-article a:nth-of-type(1)').attr("href");
-    console.log("the value upon reload is " + imgProdNow)
-    checkStatus().then(function (status) {
-      if (status === 1) {
+    chrome.storage.local.get('currentFirstItem', function (result) {
+      if (result.currentFirstItem === 0) {
+        var imgProd = $('.inner-article a:nth-of-type(1)').attr("href");
+        chrome.storage.local.set({
+          currentFirstItem: imgProd
+        });
+        var imgProdNow = $('.inner-article a:nth-of-type(1)').attr("href");
         autoRefresh(imgProdNow);
-      }
+      } else {
+        var imgProdNow = $('.inner-article a:nth-of-type(1)').attr("href");
+        console.log("the value upon reload is " + imgProdNow)
+        checkStatus().then(function (status) {
+          if (status === 1) {
+            autoRefresh(imgProdNow);
+            console.log("Page loaded. New Link. Status 1. Auto Refresh.")
+          }
+        });
+      };
     });
+  } else if (window.location.href === checkoutLink) {
+    fillforms();
+    console.log("Page loaded. Checkout link. Fill forms.")
   }
 });
-
-//Fill Forms
-fillforms();
 
 if (window.location.href === newLink) {
   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -53,6 +65,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.greeting === "snipeitnow") {
     if (window.location.href !== newLink) {
       window.location.href = newLink;
+      chrome.storage.local.set({
+        currentFirstItem: 0
+      });
     } else {
       // Store first image url and detect change
       var imgProd = $('.inner-article a:nth-of-type(1)').attr("href");
@@ -335,13 +350,15 @@ function nostock() {
 // Function to fill forms if on checkout page
 function fillforms() {
   var doc = window.document;
+  console.log("This is the check before a checkout page.");
 
-  if (window.location.href === checkoutLink) {
+    console.log("This is a checkout page.");
     var checkForm = setInterval(function () {
       if (doc.getElementById("number_v")) {
         clearInterval(checkForm);
         var nowZone = doc.getElementById("time-zone-name").innerHTML;
         if (nowZone === "TYO") {
+          console.log("This is the TYO checkout page.");
           chrome.storage.local.get('tyoPref', function (items) {
             var tyoPref = items.tyoPref;
             for (var key in tyoPref) {
@@ -373,5 +390,5 @@ function fillforms() {
         });
       }
     }, 10);
-  }
+
 }
