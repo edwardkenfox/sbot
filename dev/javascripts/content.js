@@ -29,6 +29,8 @@ $(function() {
   } else if (window.location.href === checkoutLink) {
     fillforms();
     console.log("Page loaded. Checkout link. Fill forms.")
+  } else if ((window.location.href.indexOf("supremenewyork") != -1) && (window.location.href !== newLink) &&  (window.location.href !== checkoutLink) && (window.location.href !== cartLink) && (window.location.href !== allLink) && (window.location.href !== 'http://www.supremenewyork.com/shop')) {
+    addToCart();
   }
 });
 
@@ -43,12 +45,6 @@ if (window.location.href === newLink) {
     }
   });
 }
-
-$(function() {
-  if ((window.location.href.indexOf("supremenewyork") != -1) && (window.location.href !== newLink) &&  (window.location.href !== checkoutLink) && (window.location.href !== cartLink) && (window.location.href !== allLink) && (window.location.href !== 'http://www.supremenewyork.com/shop')) {
-    addToCart();
-  }
-});
 
 //On URL Change
 var oldLocation = window.location.href;
