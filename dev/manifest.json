@@ -16,12 +16,21 @@
   "content_scripts": [
     {
       "matches": [
-        "http://www.supremenewyork.com/shop/*",
-        "https://www.supremenewyork.com/checkout"
+        "http://www.supremenewyork.com/shop/*"
       ],
       "js": [
         "javascripts/jquery.min.js",
         "javascripts/content.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://www.supremenewyork.com/checkout"
+      ],
+      "js": [
+        "javascripts/jquery.min.js",
+        "javascripts/checkout.js"
       ],
       "run_at": "document_start"
     },
