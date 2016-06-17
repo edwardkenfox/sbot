@@ -1,27 +1,46 @@
-// Variables
-var checkoutLink = 'https://www.supremenewyork.com/checkout';
-var cartLink = 'https://www.supremenewyork.com/cart';
-var allLink = 'http://www.supremenewyork.com/shop/all';
-var newLink = 'http://www.supremenewyork.com/shop/new';
-var productPattern = new RegExp("http://www.supremenewyork.com/shop/([a-z'-]+)/([a-z0-9]+)/([a-z-0-9]+)")
-
-//On Loop
 $(function() {
-  if (window.location.href.match(productPattern)) {
-    console.log("Page loaded. Match product page.")
-    addToCart();
-  }
+  addToCart();
 });
 
-//On URL Change
-var oldLocation = window.location.href;
-setInterval(function() {
-  if(window.location.href !== oldLocation) {
-    console.log("URL changed to "+ window.location.href);
-    oldLocation = window.location.href
-    addToCart();
-  }
-}, 500); // check every second
+function addToCart() {
+  var checkSize = setInterval(function () {
+    if (document.querySelector("#size option")) { // If product isn't already in cart and size dropdown exists
+      console.log("Dropdown exist");
+      clearInterval(checkSize);
+      selectSize().then(function (sizeValue) {
+        console.log("size has been resolved to the value of " + sizeValue)
+        if (sizeValue !== undefined) {
+          $("#size").val(sizeValue);
+          var checkCart = setInterval(function () {
+            var doc = window.document;
+            if ((doc.getElementById("size").value === sizeValue) && (doc.getElementById("cart-addf"))) {
+              console.log("The size is correctly selected.");
+              addSizeOne();
+              chrome.runtime.sendMessage({
+                greeting: "increasecount"
+              });
+              console.log("Increase item count and successfully added.");
+              clearInterval(checkCart);
+            }
+          }, 10);
+        }
+      });
+    } else if ($("#size").attr('type') === 'hidden') {
+      clearInterval(checkSize);
+      console.log("Increase item count and add one.");
+      addOneSize();
+      chrome.runtime.sendMessage({
+        greeting: "increasecount"
+      });
+    } else {
+      clearInterval(checkSize);
+      chrome.runtime.sendMessage({
+        greeting: "increasecount"
+      });
+      console.log("Increase item count and item not added.");
+    }
+  }, 10);
+}
 
 function selectSize() {
   console.log("Executing selectSize()")
@@ -86,47 +105,6 @@ function selectSize() {
   });
 }
 
-function addToCart() {
-  var checkSize = setInterval(function () {
-    if (document.querySelector("#size option")) { // If product isn't already in cart and size dropdown exists
-      console.log("Dropdown exist");
-      clearInterval(checkSize);
-      selectSize().then(function (sizeValue) {
-        console.log("size has been resolved to the value of " + sizeValue)
-        if (sizeValue !== undefined) {
-          $("#size").val(sizeValue);
-          var checkCart = setInterval(function () {
-            var doc = window.document;
-            if ((doc.getElementById("size").value === sizeValue) && (doc.getElementById("cart-addf"))) {
-              console.log("The size is correctly selected.");
-              addSizeOne();
-              chrome.runtime.sendMessage({
-                greeting: "increasecount"
-              });
-              console.log("Increase item count and successfully added.");
-              clearInterval(checkCart);
-            }
-          }, 10);
-        }
-      });
-    } else if ($("#size").attr('type') === 'hidden') {
-      clearInterval(checkSize);
-      chrome.runtime.sendMessage({
-        greeting: "increasecount"
-      });
-      console.log("Increase item count and one size item successfully added.");
-      checkStatus();
-      addOneSize();
-    } else {
-      clearInterval(checkSize);
-      chrome.runtime.sendMessage({
-        greeting: "increasecount"
-      });
-      console.log("Increase item count and item not added.");
-    }
-  }, 10);
-}
-
 function addSize() {
   getLink().then(function (allURL) { // Get all registered URLs
     var totalPos = Object.keys(allURL).length - 1;
@@ -136,23 +114,18 @@ function addSize() {
       url: document.getElementById("cart-addf").getAttribute("action"),
       type: 'POST',
       data: "size=" + sizeValue,
+      success: function () {
+        console.log("Add size ajax success")
+      }
     });
   });
 }
 
 function addSizeOne() {
-  getLink().then(function (allURL) { // Get all registered URLs
-    var totalPos = Object.keys(allURL).length - 1;
-    var posNow = allURL.nowUrl;
-    var gotoPage = allURL[("putURL" + posNow).toString()];
-    $.ajax({
-      url: document.getElementById("cart-addf").getAttribute("action"),
-      type: 'POST',
-      data: "size=" + sizeValue,
-      success: function () {
-        checkout();
-      }
-    });
+  $.ajax({
+    url: document.getElementById("cart-addf").getAttribute("action"),
+    type: 'POST',
+    data: "size=" + sizeValue,
   });
 }
 
@@ -160,23 +133,10 @@ function addSizeOne() {
 function addOneSize() {
   var doc = window.document;
   onesize = doc.getElementById("size").value;
-
-  getLink().then(function (allURL) { // Get all registered URLs
-    // var allURL = items.allURL;
-    var totalPos = Object.keys(allURL).length - 1; // Get total number of URLs minus the data for position and minus 1 for URL position
-    // Get current URL position
-    var posNow = allURL.nowUrl;
-    // Get the URL to snipe at this time
-    var dataObj = ("putURL" + posNow).toString();
-    var gotoPage = allURL[dataObj];
-    $.ajax({
-      url: doc.getElementById("cart-addf").getAttribute("action"),
-      type: 'POST',
-      data: "size=" + onesize,
-      success: function () {
-        goNext();
-      }
-    });
+  $.ajax({
+    url: doc.getElementById("cart-addf").getAttribute("action"),
+    type: 'POST',
+    data: "size=" + onesize,
   });
 }
 
