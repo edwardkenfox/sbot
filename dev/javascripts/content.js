@@ -3,6 +3,7 @@ var checkoutLink = 'https://www.supremenewyork.com/checkout';
 var cartLink = 'https://www.supremenewyork.com/cart';
 var allLink = 'http://www.supremenewyork.com/shop/all';
 var newLink = 'http://www.supremenewyork.com/shop/new';
+var productPattern = new RegExp("http://www.supremenewyork.com/shop/([a-z'-]+)/([a-z0-9]+)/([a-z-0-9]+)")
 
 //On Loop
 $(function() {
@@ -29,7 +30,8 @@ $(function() {
   } else if (window.location.href === checkoutLink) {
     fillforms();
     console.log("Page loaded. Checkout link. Fill forms.")
-  } else if ((window.location.href.indexOf("supremenewyork") != -1) && (window.location.href !== newLink) &&  (window.location.href !== checkoutLink) && (window.location.href !== cartLink) && (window.location.href !== allLink) && (window.location.href !== 'http://www.supremenewyork.com/shop')) {
+  } else if (window.location.href.match(productPattern)) {
+    console.log("Page loaded. Match product page.")
     addToCart();
   }
 });
