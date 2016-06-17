@@ -6,19 +6,19 @@ var newLink = 'http://www.supremenewyork.com/shop/new';
 
 //On Loop
 $(function() {
-  var imgProdNow = $('.inner-article a:nth-of-type(1)').attr("href");
-  console.log("the value upon reload is " + imgProdNow)
-  checkStatus().then(function (status) {
-    if (status === 1) {
-      autoRefresh(imgProdNow);
-    }
-  });
+  if (window.location.href === newLink) {
+    var imgProdNow = $('.inner-article a:nth-of-type(1)').attr("href");
+    console.log("the value upon reload is " + imgProdNow)
+    checkStatus().then(function (status) {
+      if (status === 1) {
+        autoRefresh(imgProdNow);
+      }
+    });
+  }
 });
 
 //Fill Forms
-if (window.location.href === checkoutLink) {
-  fillforms();
-}
+fillforms();
 
 if (window.location.href === newLink) {
   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
