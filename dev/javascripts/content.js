@@ -36,7 +36,7 @@ if (window.location.href === newLink) {
       var openCheckout = setInterval(function () {
         window.open(checkoutLink, '_blank')
         clearInterval(openCheckout);
-      }, 300 );
+      }, 600 );
       console.log("Got message to open checkout page")
     }
   });
